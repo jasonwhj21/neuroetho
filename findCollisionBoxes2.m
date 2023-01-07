@@ -41,6 +41,9 @@ function rawDatafiltCollisions = findCollisionBoxes2(rawDatafiltBoxes, otherOrg,
         
         All_Dal_Vertices = data.dal_verticies;
         All_Other_Vertices = data.other_verticies;
+        dal_poly = size(All_Dal_Verticies,2); %Is this the right dimension?
+        other_poly = size(All_Other_Vertices, 2);
+        
         
         %loop through all rows in each expt
         for k = 1:rows
@@ -49,9 +52,10 @@ function rawDatafiltCollisions = findCollisionBoxes2(rawDatafiltBoxes, otherOrg,
             %This is slightly difference than before, now that the vertices
             %column can itself have multiple columns representing multiple
             %polygons 
-            Dal_Vertices = All_Dal_Vertices{k, :};
-            Other_Vertices = All_Other_Vertices{k, :};      
-            
+            Dal_Verticies = All_Dal_Vertices{k, :};
+            Other_Verticies = All_Other_Vertices{k, :};      
+            dal_how_many_verticies = size(Dal_Verticies{1,1}, 1);
+            other_how_many_verticies = size(Other_Verticies{1,1}, 1)
             collidings = []
 
             % x = k;
@@ -61,16 +65,16 @@ function rawDatafiltCollisions = findCollisionBoxes2(rawDatafiltBoxes, otherOrg,
                 for m = 1:other_poly
                     colliding = true;
                     for n = 1:dal_how_many_verticies
-                        v1 = Dal_Vertices{1, l}(n, :);
+                        v1 = Dal_Verticies{1, l}(n, :);
                         ind = mod(n,dal_how_many_verticies) + 1;
-                        v2 = Dal_Vertices{1, l}(ind, :);
+                        v2 = Dal_Verticies{1, l}(ind, :);
                         
                         edge = v2 - v1;
 
                         axis = [edge(1,2) -edge(1,1)]; 
 
-                        dalMinMaxProjections = projectVertices2(Dal_Vertices{1, l}, axis);
-                        otherMinMaxProjections = projectVertices2(Other_Vertices{1, m}, axis);
+                        dalMinMaxProjections = projectVertices2(Dal_Verticies{1, l}, axis);
+                        otherMinMaxProjections = projectVertices2(Other_Verticies{1, m}, axis);
 
                         if (    dalMinMaxProjections(1,1) == Inf ||...
                             dalMinMaxProjections(1, 2) == -Inf ||...
@@ -87,16 +91,16 @@ function rawDatafiltCollisions = findCollisionBoxes2(rawDatafiltBoxes, otherOrg,
                     end
 
                     for g = 1:other_how_many_verticies
-                        v1 = Other_Vertices{1, m}(g, :);
+                        v1 = Other_Verticies{1, m}(g, :);
                         ind = mod(g,other_how_many_verticies) + 1;
-                        v2 = Other_Vertices{1, m}(ind, :);
+                        v2 = Other_Verticies{1, m}(ind, :);
                         
                         edge = v2 - v1;
 
                         axis = [edge(1,2) -edge(1,1)]; 
 
-                        dalMinMaxProjections = projectVertices2(Dal_Vertices{1, l}, axis);
-                        otherMinMaxProjections = projectVertices2(Other_Vertices{1, m}, axis);
+                        dalMinMaxProjections = projectVertices2(Dal_Verticies{1, l}, axis);
+                        otherMinMaxProjections = projectVertices2(Other_Verticies{1, m}, axis);
 
                         if (    dalMinMaxProjections(1,1) == Inf ||...
                             dalMinMaxProjections(1, 2) == -Inf ||...

@@ -21,7 +21,7 @@ otherMidYIdx = contains(header, 'AntThorax_y');
 otherHdXIdx = contains(header, 'AntHead_x');
 otherHdYIdx = contains(header, 'AntHead_y');
 
-rawDatafilterVelocityOrientations = cell(expnum, 1);   % cell array to return
+rawDatafiltVelocityOrientations = cell(expnum, 1);   % cell array to return
 % frame to min conversion: eg, (1 sec/60 frames)*(1 min/60 sec)=time in min
 fps = 60;
 frame2time = (1/fps) * (1/60); %
@@ -45,35 +45,35 @@ for i = 1:expnum
         other_pos1 = [other_positions_x(j) other_positions_y(j)];
         other_pos2 = [other_positions_x(j + 1) other_positions_y(j+1)];
         
-        dal_disp = dal_pos2 - dalpos1; 
+        dal_disp = dal_pos2 - dal_pos1; 
         other_disp = other_pos2 - other_pos1;
     
         time_elapsed = time_col(j + 1, 1) - time_col(j, 1);
         
         dal_velocity = dal_disp ./ time_elapsed; %Unlike with velocities2, velocity is 2D vector
-        other_velocity = other_disp ./ time_elapsed
+        other_velocity = other_disp ./ time_elapsed;
 
         dal_speed = vecnorm(dal_velocity);
         other_speed = vecnorm(other_velocity);
 
-        norm_dot_product = dot(dal_velocity./dal_speed, other_velocity./other_speed) %Take the normalized dot product between the velocities)
+        norm_dot_product = dot(dal_velocity./dal_speed, other_velocity./other_speed); %Take the normalized dot product between the velocities)
         
         velocity_orientations(j,1) = norm_dot_product;
         if rawDatafiltCollisions{i,1}(2) == 1
             if norm_dot_product < 0 && other_speed > 20 && dal_speed > 20
-                velocity_orientations(j,2) = 'Mutual'
+                velocity_orientations(j,2) = 'Mutual';
             elseif norm_dot_product > 0 && other_speed > dal_speed
-                velocity_orientations(j,2) = 'Other_chase'
+                velocity_orientations(j,2) = 'Other_chase';
             elseif norm_dot_product > 0 && dal_speed > other_speed   
-                velocity_orientations(j,2) = 'Dal_chase'
+                velocity_orientations(j,2) = 'Dal_chase';
             elseif dal_speed >=20 && other_speed <= 20
-                velocity_orientations(j,2) = 'Dal_Approach'
+                velocity_orientations(j,2) = 'Dal_Approach';
             elseif dal_speed <=20 && other_speed >= 20
-                velocity_orientations(j,2) = 'Other_Approach'
+                velocity_orientations(j,2) = 'Other_Approach';
             end
         else 
-            velocity_orientations(j,2) = 'No_Inter'
+            velocity_orientations(j,2) = 'No_Inter';
         end
     end
-    rawDatafiltVelocityOrientations{i,1} = array2table(velocity_orientations, "VariableNames", {'Velocities Dotted', 'Interaction Type'})
+    rawDatafiltVelocityOrientations{i,1} = array2table(velocity_orientations, "VariableNames", {'Velocities Dotted', 'Interaction Type'});
 end
