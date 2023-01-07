@@ -73,9 +73,7 @@ for i = 1:expnum
     sizes_data = rawDatafiltSizes{i, 1};
 
     %Grab the indices
-    dal_centers_x = data{:, dalCenterXIdx};
-    dal_centers_y = data{:, dalCenterYIdx};
-
+    
     dal_abd1_x = data{:,dalAbd1XIdx};
     dal_abd1_y = data{:,dalAbd1YIdx};
     dal_abd2_x = data{:,dalAbd2XIdx};
@@ -97,12 +95,10 @@ for i = 1:expnum
         %Start looping through individual frames
         
 
-        dal_center_xy = [dal_centers_x(k, 1), dal_centers_y(k, 1)];
+        
         dal_abd1_xy = [dal_abd1_x(k, 1), dal_abd1_y(k, 1)];
         dal_abd2_xy = [dal_abd2_x(k, 1), dal_abd2_y(k, 1)];
         dal_abd3_xy = [dal_abd3_x(k, 1), dal_abd3_y(k, 1)];
-        dal_antennaR_xy = [dal_antennaR_x(k, 1), dal_antennaR_y(k, 1)];
-        dal_antennaL_xy = [dal_antennaL_x(k, 1), dal_antennaL_y(k, 1)];
         dal_head_xy = [dal_head_x(k, 1), dal_head_y(k, 1)];
         dalWidth = sizes_data{k, 3} / 2;
         
