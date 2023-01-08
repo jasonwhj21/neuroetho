@@ -3,36 +3,29 @@
 % A cell array of tables, the first column of which is the frame numbers,
 % and the second being dal_vertices which define the beetle's bounding box
 % on that frame
-% Dal_verticies is itself a 3 column cell array. Within the 
+% Dal_verticies is itself a 3 column cell array. Within each columnm is a
+% rectangle represented by a 4 row, 2 column array, which looks like 
+% {[x,y]; [x,y]; [x,y]; [x,y]}
 %% Explanation 
-% To find the vertices, first find 2 vectors: one pointing from abd 1 to
-% pronotum (center) and one pointing from abd 3 to abd 2. Then for each of
-% those vectors, find the normalized vector pointing perpendicular to it.
-% We will refer to those vectors as the axes.
-% Next, locate abd 1 and find the point that is dal_width/2 distance away
-% in the axes direction; that is our first vertex. Then repeat in the -axes
-% direction. Then, repeat the whole process with abd 3. Finally, take the
-% two antenna to get the 6 vertices.
+% How are each of the 4 vertices found? The first set is found by taking
+% the vector from abd3 pointing to abd2. Then, take the normalized,
+% perpendicular vector. Lets call that the "axis". Then, extend abd2 in the
+% positive axis and negative axis direction by dal_width/2. Repeat with
+% abd3 to get 4 points. Repeat the entire process with a vector poiting
+% from abd2 to abd 1, then abd1 to head. I reasoned that there isn't as
+% much flexion from abd1 to head, meaning it can be reasonably approximated
+% by 1 rectangle. The only difference is that I made the rectangle slightly
+% longer to account for the antenna as seen on 118-119.
 %% Problems
 % There are a few problems: at the moment, dal width is defined by a ratio
 % with dal length, which is itself defined by taking the euclidean distance
 % between the head and abd3. If the beetle is curled up, the accuracy of
 % the length suffers, and the width will consequently suffer as well.
 % Please correct me if I'm misunderstanding the length part.
+% The other problem is that I haven't done this for the other organism yet,
+% since it's a much more variable organism. Might just keep using ellipses.
 
-% Another problem is whether to extend out the bounding box a little. In
-% other words, do we extend the points by dal_width + x, which would create
-% some leniency in interactions? createEllipses2 does this (with x = 8),
-% but the problem with this bounding box method is that there's no way to
-% ensure that the resulting polygon isn't self intersecting if x is too large. This is
-% not a big problem; we can simply make x small , <2 or so.
 
-% Finally, we need to make sure the polygon is convex. This is no problem,
-% I can just divide it into 2 quatrilaterals, and do the dividing
-% separating axis theorem twice. If I decide to change the ant bounding box
-% later, then we can do the separating axis theorem 4 times. I haven't
-% found a better bounding method for ants quite yet due to their long legs
-% and the lack of points on the hind legs.
 
 
 function rawDataFiltBoxes = createBoundingBox(rawDatafilt, rawDatafiltSizes)

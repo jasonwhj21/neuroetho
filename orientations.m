@@ -5,6 +5,20 @@
 % ex: otherOrg = 'Dmel';
 
 %% outputs:rawDatafiltOrientations
+%% Explanation
+% Based on their relative velocities at the moment of contact, sorts the
+% interaction into 5 categories. 
+% Mutual approach: both orgs moved towards each other
+% Dal chase: Dal chased and other ran away
+% Other chase: Other chased and dal ran away
+% Dal approach: Dal chased but other didn't run away
+% Other appraoch: Other chased but dal didn't run away
+%% Problem
+% By only taking the instantaneous velocities at time of contact, there's
+% a lot of potential for noise to affect things i.e. jittery movements,
+% tracking software slight mistakes. Some sort of average of the previous 1
+% second or so should be taken.
+
 
 function [rawDatafiltVelocityOrientations] = orientations(rawDatafilt, rawDatafiltCollisions)
 %% Function Start

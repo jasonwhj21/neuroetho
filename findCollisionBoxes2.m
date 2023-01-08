@@ -1,11 +1,5 @@
-%% inputs: rawDatafiltEllipses (output of createEllipses), outputPath, otherOrg
-% rawDatafiltEllipses
-% exp 1 -> frame_nums(arr)   dal_vertices(cell arr) other_vertices(cell arr)
+%% inputs: rawDatafiltBoxes
 
-% outputPath and otherOrg
-% outputPath is a string of output path of figures for interactions, and
-% otherOrg is a string of the other organism's name, which is used to name
-% the files for the figures
 %
 %% outputs: rawDatafiltCollisions
 % rawDatafiltCollisions is a cell array with expnum/2 rows (bc accounting 
@@ -13,9 +7,12 @@
 % being a table with the following format
 %  frame_nums (arr)        final_collisions (arr)
 % Saves one file per experiment for collisions
+%% Explanation
+% Instead of comparing two polygons, the function must now loop through
+% every combination of polygons from both organisms to check for overlap.
+% Otherwise, it follows the same principle as before.
 
-function rawDatafiltCollisions = findCollisionBoxes2(rawDatafiltBoxes, otherOrg, dal_poly, other_poly, dal_how_many_verticies, other_how_many_verticies)
-
+function rawDatafiltCollisions = findCollisionBoxes2(rawDatafiltBoxes, otherOrg)
 
 %     ogstrt = strt;
 % 
@@ -42,7 +39,7 @@ function rawDatafiltCollisions = findCollisionBoxes2(rawDatafiltBoxes, otherOrg,
         All_Dal_Vertices = data.dal_verticies;
         All_Other_Vertices = data.other_verticies;
         dal_poly = size(All_Dal_Verticies,2); %Is this the right dimension?
-        other_poly = size(All_Other_Vertices, 2);
+        other_poly = size(All_Other_Vertices, 2); %These two variables are the number of polygons reprsenting each insect, inferred by the dims of data
         
         
         %loop through all rows in each expt
@@ -52,11 +49,11 @@ function rawDatafiltCollisions = findCollisionBoxes2(rawDatafiltBoxes, otherOrg,
             %This is slightly difference than before, now that the vertices
             %column can itself have multiple columns representing multiple
             %polygons 
-            Dal_Verticies = All_Dal_Vertices{k, :};
+            Dal_Verticies = All_Dal_Vertices{k, :}; 
             Other_Verticies = All_Other_Vertices{k, :};      
-            dal_how_many_verticies = size(Dal_Verticies{1,1}, 1);
-            other_how_many_verticies = size(Other_Verticies{1,1}, 1)
-            collidings = []
+            dal_how_many_verticies = size(Dal_Verticies{1,1}, 1); %These two are the number of vertices per polygon, again inferred from dims of data
+            other_how_many_verticies = size(Other_Verticies{1,1}, 1);
+            collidings = [];
 
             % x = k;
             % disp(x)
