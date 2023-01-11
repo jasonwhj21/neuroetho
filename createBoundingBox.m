@@ -37,22 +37,17 @@ header = rawDatafilt{1,1}.Properties.VariableNames;
 rawDatafiltBoxes = cell(expnum, 1);
 
 
-% extract dalotia center indices
-dalCenterXIdx = contains(header, 'DalotiaElytra_x');
-dalCenterYIdx = contains(header, 'DalotiaElytra_y');
+
 
 % extract dalotia head and tail indices
 dalAbd1XIdx = contains(header, 'DalotiaAbdomen1_x');
 dalAbd1YIdx = contains(header, 'DalotiaAbdomen1_y');
+
 dalAbd2XIdx = contains(header, 'DalotiaAbdomen2_x');
 dalAbd2YIdx = contains(header, 'DalotiaAbdomen2_y');
+
 dalAbd3XIdx = contains(header, 'DalotiaAbdomen3_x');
 dalAbd3YIdx = contains(header, 'DalotiaAbdomen3_y');
-
-dalAntennaLXIdx = contains(header, 'DalotiaAntennaL_x');
-dalAntennaLYIdx = contains(header, 'DalotiaAntennaL_y');
-dalAntennaRXIdx = contains(header, 'DalotiaAntennaR_x');
-dalAntennaRYIdx = contains(header, 'DalotiaAntennaR_y');
 
 dalHeadXIdx = contains(header, 'DalotiaHead_x');
 dalHeadYIdx = contains(header, 'DalotiaHead_y');
@@ -73,11 +68,6 @@ for i = 1:expnum
     dal_abd2_y = data{:,dalAbd2YIdx};
     dal_abd3_x = data{:,dalAbd3XIdx};
     dal_abd3_y = data{:,dalAbd3YIdx};
-
-    dal_antennaR_x = data{:, dalAntennaRXIdx};
-    dal_antennaR_y = data{:, dalAntennaRYIdx};
-    dal_antennaL_x = data{:, dalAntennaLXIdx};
-    dal_antennaL_y = data{:, dalAntennaLYIdx};
 
     dal_head_x = data{:,dalHeadXIdx};
     dal_head_y = data{:,dalHeadYIdx};

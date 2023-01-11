@@ -12,7 +12,7 @@
 % every combination of polygons from both organisms to check for overlap.
 % Otherwise, it follows the same principle as before.
 
-function rawDatafiltCollisions = findCollisionBoxes2(rawDatafiltBoxes, otherOrg)
+function rawDatafiltCollisions = findCollisionBoxes2(rawDatafiltBoxes)
 
 %     ogstrt = strt;
 % 
