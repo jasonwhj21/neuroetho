@@ -3,7 +3,7 @@
 % A cell array of tables, the first column of which is the frame numbers,
 % and the second being dal_vertices which define the beetle's bounding box
 % on that frame
-% Dal_verticies is itself a 3 column cell array. Within each columnm is a
+% Dal_Vertices is itself a 3 column cell array. Within each columnm is a
 % rectangle represented by a 4 row, 2 column array, which looks like 
 % {[x,y]; [x,y]; [x,y]; [x,y]}
 %% Explanation 
@@ -28,7 +28,7 @@
 
 
 
-function rawDataFiltBoxes = createBoundingBox(rawDatafilt, rawDatafiltSizes)
+function rawDatafiltBoxes = createBoundingBox(rawDatafilt, rawDatafiltSizes)
 
 expnum = size(rawDatafilt, 1);
 header = rawDatafilt{1,1}.Properties.VariableNames;
@@ -73,7 +73,7 @@ for i = 1:expnum
     dal_head_y = data{:,dalHeadYIdx};
 
     
-    dal_verticies = cell(rows,3);
+    dal_vertices = cell(rows,3);
     for k = 1:rows 
         %Start looping through individual frames
         
@@ -125,11 +125,11 @@ for i = 1:expnum
         rect3_abd3_vertex2 = dal_abd3_xy - (normaxis3 * (dalWidth + 2));
         rect3 = [rect3_abd2_vertex1; rect3_abd3_vertex1;rect3_abd3_vertex2; rect3_abd2_vertex2];
         
-        dal_verticies{k,1} = rect1;
-        dal_verticies{k,2} = rect2;
-        dal_verticies{k,3} = rect3;
+        dal_vertices{k,1} = rect1;
+        dal_vertices{k,2} = rect2;
+        dal_vertices{k,3} = rect3;
     end
-     tableOfVertices = table(frame_nums, dal_verticies);
+     tableOfVertices = table(frame_nums, dal_vertices);
      rawDatafiltBoxes{i, 1} = tableOfVertices;
 end
 % end

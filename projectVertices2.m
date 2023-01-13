@@ -5,8 +5,8 @@
 function minmax = projectVertices2(vertices, axis)
     min = Inf;
     max = -Inf;
-    
-    for i = 1:20
+    num_vertices = size(vertices{1,1});
+    for i = 1:num_vertices
         vertex = vertices{1, 1}(i,:);
         projection = vertex(1, 1) * axis(1, 1) + vertex(1, 2) * axis(1, 2);
         

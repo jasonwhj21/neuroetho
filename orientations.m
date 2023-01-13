@@ -1,4 +1,4 @@
-%% inputs: rawDatafiltInteractionOrientations
+%% inputs: rawDatafiltInteractionType
 % a column cell array with the same number of rows as number of experiments,
 % where each cell is a table containing 2 columns. The first column is 
 % the time of each frame, the second column is the type of interaction (0
@@ -25,19 +25,20 @@
 % interaction, and simplifying things is almost always good.
 % The classification itself still needs a little tweaking
 
-function rawDatafiltInteractionOrientations = orientations(rawDatafilt, rawDatafiltCollisions)
+function rawDatafiltInteractionType = orientations(rawDatafilt, rawDatafiltCollisions)
 %% Function Start
 
 expnum = size(rawDatafilt, 1);
 
 
-rawDatafiltInteractionOrientations = cell(expnum, 1);   % cell array to return
+rawDatafiltInteractionType = cell(expnum, 1);   % cell array to return
 % frame to min conversion: eg, (1 sec/60 frames)*(1 min/60 sec)=time in min
 fps = 60;
 frame2time = (1/fps) * (1/60); %
 for i = 1:expnum
     data = rawDatafilt{i, 1};
-    collisions = rawDatafiltCollisions{i,1}.final_collisions;
+    col_index = ceil(i/2);
+    collisions = rawDatafiltCollisions{col_index,1}.final_collisions;
     rows = size(data, 1);
     frame_nums = [1:rows]';
     time_col = frame_nums * frame2time;     % time column
@@ -50,10 +51,11 @@ for i = 1:expnum
     other_positions_y = data.AntThorax_y;
     interaction_starts = [];
     interaction_ends = [];
-    for j = 1:rows-1
+    for j = 1:rows
         if collisions(j) == 1 && any(collisions(j-min(j,5):j-1)) == false 
             interaction_starts(end+1) = j; %If a time point has a collision but no collision within 5 frames before, then it's the start of a bout
-        elseif collisions(j) == 1 && any(collisions(j+1:j+min(5, rows-1-j))) == false
+        end
+        if collisions(j) == 1 && any(collisions(j+1:j+min(5, rows-1-j))) == false
             interaction_ends(end+1) = j; %If a time point has a collision but no collision within 5 frames after, then it's the end of a bout
         end
     end
@@ -81,19 +83,15 @@ for i = 1:expnum
 
         norm_dot_product = dot(dal_velocity./dal_speed, other_velocity./other_speed); %Take the normalized dot product between the velocities
         
-        if interaction_type < 0 && other_speed > 20 && dal_speed > 20
-            interaction_type(start:finish) = 'Mutual';
+        if norm_dot_product < 0 
+            interaction_type(start:finish,1) = 1;
         elseif norm_dot_product > 0 && other_speed > dal_speed
-            interaction_type(start:finish) = 'Other_chase';
+            interaction_type(start:finish,1) = 2;
         elseif norm_dot_product > 0 && dal_speed > other_speed   
-            interaction_type(start:finish) = 'Dal_chase';
-        elseif dal_speed >=20 && other_speed <= 20
-            interaction_type(start:finish) = 'Dal_Approach';
-        elseif dal_speed <=20 && other_speed >= 20
-            interaction_type(start:finish) = 'Other_Approach';
+            interaction_type(start:finish,1) = 3;
         end
    
     end
     
-    rawDatafiltInteractionOrientations{i,1} = table(time_col,interaction_type);
+    rawDatafiltInteractionType{i,1} = table(time_col,interaction_type);
 end

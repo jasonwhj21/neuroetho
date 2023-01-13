@@ -1,5 +1,8 @@
 %% inputs: rawDatafiltBoxes
-
+% Two cell arrays, each with expnum number of rows. For the first cell
+% array, each element is a table with at least one column called
+% dal_Vertices. For the second cell array, each element is a table with at
+% least one column called other_Vertices
 %
 %% outputs: rawDatafiltCollisions
 % rawDatafiltCollisions is a cell array with expnum/2 rows (bc accounting 
@@ -12,7 +15,7 @@
 % every combination of polygons from both organisms to check for overlap.
 % Otherwise, it follows the same principle as before.
 
-function rawDatafiltCollisions = findCollisionBoxes2(rawDatafiltBoxes)
+function rawDatafiltCollisions = findCollisionBoxes2(rawDatafiltBoxes, otherEllipses)
 
 %     ogstrt = strt;
 % 
@@ -33,26 +36,28 @@ function rawDatafiltCollisions = findCollisionBoxes2(rawDatafiltBoxes)
    
     %loop through all expts
     for i = 1:expnum 
-        data = rawDatafiltBoxes{i,1};
-        rows = size(data, 1);
+        dal = rawDatafiltBoxes{i,1};
+        other = otherEllipses{i,1};
+        rows = size(dal, 1);
         
-        All_Dal_Vertices = data.dal_verticies;
-        All_Other_Vertices = data.other_verticies;
-        dal_poly = size(All_Dal_Verticies,2); %Is this the right dimension?
+        All_Dal_Vertices = dal.dal_Vertices;
+        All_Other_Vertices = other.other_vertices;
+        dal_poly = size(All_Dal_Vertices,2); %Is this the right dimension?
         other_poly = size(All_Other_Vertices, 2); %These two variables are the number of polygons reprsenting each insect, inferred by the dims of data
         
+        collide_or_not = zeros(rows,1);
         
         %loop through all rows in each expt
         for k = 1:rows
             
-            %Dal and other ellipse vertices in frame k, assuming NaNs give NaNs
-            %This is slightly difference than before, now that the vertices
+            %Dal and other ellipse Vertices in frame k, assuming NaNs give NaNs
+            %This is slightly difference than before, now that the Vertices
             %column can itself have multiple columns representing multiple
             %polygons 
-            Dal_Verticies = All_Dal_Vertices{k, :}; 
-            Other_Verticies = All_Other_Vertices{k, :};      
-            dal_how_many_verticies = size(Dal_Verticies{1,1}, 1); %These two are the number of vertices per polygon, again inferred from dims of data
-            other_how_many_verticies = size(Other_Verticies{1,1}, 1);
+            Dal_Vertices = All_Dal_Vertices(k, :); 
+            Other_Vertices = All_Other_Vertices(k, :);      
+            dal_how_many_Vertices = size(Dal_Vertices{1,1}, 1); %These two are the number of Vertices per polygon, again inferred from dims of data
+            other_how_many_Vertices = size(Other_Vertices{1,1}, 1);
             collidings = [];
 
             % x = k;
@@ -61,17 +66,17 @@ function rawDatafiltCollisions = findCollisionBoxes2(rawDatafiltBoxes)
             for l = 1:dal_poly
                 for m = 1:other_poly
                     colliding = true;
-                    for n = 1:dal_how_many_verticies
-                        v1 = Dal_Verticies{1, l}(n, :);
-                        ind = mod(n,dal_how_many_verticies) + 1;
-                        v2 = Dal_Verticies{1, l}(ind, :);
+                    for n = 1:dal_how_many_Vertices
+                        v1 = Dal_Vertices{1, l}(n, :);
+                        ind = mod(n,dal_how_many_Vertices) + 1;
+                        v2 = Dal_Vertices{1, l}(ind, :);
                         
                         edge = v2 - v1;
 
                         axis = [edge(1,2) -edge(1,1)]; 
 
-                        dalMinMaxProjections = projectVertices2(Dal_Verticies{1, l}, axis);
-                        otherMinMaxProjections = projectVertices2(Other_Verticies{1, m}, axis);
+                        dalMinMaxProjections = projectVertices2(Dal_Vertices(1, l), axis);
+                        otherMinMaxProjections = projectVertices2(Other_Vertices(1, m), axis);
 
                         if (    dalMinMaxProjections(1,1) == Inf ||...
                             dalMinMaxProjections(1, 2) == -Inf ||...
@@ -87,17 +92,17 @@ function rawDatafiltCollisions = findCollisionBoxes2(rawDatafiltBoxes)
                         end
                     end
 
-                    for g = 1:other_how_many_verticies
-                        v1 = Other_Verticies{1, m}(g, :);
-                        ind = mod(g,other_how_many_verticies) + 1;
-                        v2 = Other_Verticies{1, m}(ind, :);
+                    for g = 1:other_how_many_Vertices
+                        v1 = Other_Vertices{1, m}(g, :);
+                        ind = mod(g,other_how_many_Vertices) + 1;
+                        v2 = Other_Vertices{1, m}(ind, :);
                         
                         edge = v2 - v1;
 
                         axis = [edge(1,2) -edge(1,1)]; 
 
-                        dalMinMaxProjections = projectVertices2(Dal_Verticies{1, l}, axis);
-                        otherMinMaxProjections = projectVertices2(Other_Verticies{1, m}, axis);
+                        dalMinMaxProjections = projectVertices2(Dal_Vertices(1, l), axis);
+                        otherMinMaxProjections = projectVertices2(Other_Vertices(1, m), axis);
 
                         if (    dalMinMaxProjections(1,1) == Inf ||...
                             dalMinMaxProjections(1, 2) == -Inf ||...
@@ -123,7 +128,7 @@ function rawDatafiltCollisions = findCollisionBoxes2(rawDatafiltBoxes)
         frame_nums = [1:rows]';
         rawDatafiltCollisionsTemp{i, 1} = table(frame_nums, collide_or_not);
         
-        clear colliding_or_not
+        
     end
 
     % Now we do, if colliding in top view and colliding in side view, then
