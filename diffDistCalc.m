@@ -20,23 +20,7 @@ load('xyDataFilt.mat')
 
 frameNum = 1;
 
-dalotiaHeadx = 8;
-dalotiaHeady = 9;
-dalotiaElyx = 14;
-dalotiaElyy = 15;
-dalotiaAb1x = 17;
-dalotiaAb1y = 18;
-dalotiaAb2x = 20;
-dalotiaAb2y = 21;
-dalotiaAb3x = 23;
-dalotiaAb3y = 24;
 
-otherHeadx = 26;
-otherHeady = 27;
-otherMidx = 29;
-otherMidy = 30;
-otherTailx = 32;
-otherTaily = 33;
 
 %number of experiments
 expnum = size(rawDatafilt,1);
@@ -55,15 +39,24 @@ end
 
     
 %% Find distribution of delta distance between frames 
-
+frameNum = 1;
+%number of experiments
+expnum = size(rawDatafilt,1);
 diffDist = cell(expnum,1);
+% fps to min: e.g.(1 sec/60 frames)*(1 min/60 sec)=time in min
+fps = 60;
+frame2time = (1/fps) * (1/60); 
+
+%number of std dev away from mean for which diffDist is an outlier
+beta = 3;
+
 
 for i = 1:2:expnum
     
     % Dal-Other Euclidean Dist,
     % x- and y- are from base and z- position is from mirror
-    dalAbd1T = [rawDatafilt{i,1}{:,dalotiaAb1x}, rawDatafilt{i,1}{:,dalotiaAb1y}, rawDatafilt{i+1,1}{:,dalotiaAb1x}];
-    otherMidT = [rawDatafilt{i,1}{:,otherMidx}, rawDatafilt{i,1}{:,otherMidy}, rawDatafilt{i+1,1}{:,otherMidx}];
+    dalAbd1T = [rawDatafilt{i,1}.DalotiaAbdomen1_x, rawDatafilt{i,1}.DalotiaAbdomen1_y, rawDatafilt{i+1,1}.DalotiaAbdomen1_x];
+    otherMidT = [rawDatafilt{i,1}.AntThorax_x, rawDatafilt{i,1}.AntThorax_y, rawDatafilt{i+1,1}.AntThorax_x];
     distrawT = sqrt(sum(((dalAbd1T - otherMidT).^2), 2));
 %     distT = sqrt(sum(((dalAbd1T - larMidT).^2), 2));
     tT = rawDatafilt{i+1,1}{:,frameNum} * frame2time;
