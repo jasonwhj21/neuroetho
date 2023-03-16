@@ -1,0 +1,28 @@
+Bento annotation file
+Movie file(s):  /Users/jasonwong/Projects/Beetle_Learning_BENTO/Annotations_to_match_with_Jess/Dal_Acromyrmex/Camera1_Top_220713_DalMaleAcromyrmexAnt_4dayStrvd_run401.mp4 
+
+Stimulus name: 
+Annotation start time: 1.666667e-02
+Annotation stop time: 1.193050e+03
+Annotation framerate: 60.000000
+
+List of channels:
+Ch1
+
+List of annotations:
+Dal_Approach
+Mutual_Approach
+Other_Approach
+
+Ch1----------
+>Dal_Approach
+Start	 Stop	 Duration 
+3871	3888	18
+
+>Other_Approach
+Start	 Stop	 Duration 
+6630	6657	28
+10783	10930	148
+16682	16853	172
+
+

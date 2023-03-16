@@ -1,0 +1,37 @@
+Bento annotation file
+Movie file(s):  /Users/jasonwong/Projects/Beetle_Learning_BENTO/Annotations_to_match_with_Jess/Camera1_Top_220701_DalFemaleSolenopsisAnt_4dayStrvd_run401.mp4 
+
+Stimulus name: 
+Annotation start time: 3.333333e-02
+Annotation stop time: 2.329400e+03
+Annotation framerate: 30.000000
+
+List of channels:
+New
+
+List of annotations:
+Dal_Approach
+Flexing
+Mutual_Approach
+Other_Approach
+
+New----------
+>Dal_Approach
+Start	 Stop	 Duration 
+10377	10432	56
+11171	11205	35
+
+>Flexing
+Start	 Stop	 Duration 
+533	1084	552
+2756	3124	369
+3158	3160	3
+3704	4015	312
+4047	4363	317
+11206	11214	9
+
+>Mutual_Approach
+Start	 Stop	 Duration 
+12512	15839	3328
+
+
