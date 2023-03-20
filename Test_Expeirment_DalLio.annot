@@ -1,0 +1,97 @@
+Bento annotation file
+Movie file(s):  /Users/jasonwong/Projects/Beetle_Learning_BENTO/220119_DalAnt_1daystrvd_run101.mp4 
+
+Stimulus name: 
+Annotation start time: 1.666667e-02
+Annotation stop time: 1.220283e+03
+Annotation framerate: 60.000000
+
+List of channels:
+Channel_1
+
+List of annotations:
+Dal_Approach
+Dal_Chase
+Flexing
+Interact
+Mutual_Approach
+Other_Approach
+Other_Chase
+
+Channel_1----------
+>Dal_Approach
+Start	 Stop	 Duration 
+21008	21117	110
+
+>Dal_Chase
+Start	 Stop	 Duration 
+3323	3325	3
+
+>Flexing
+Start	 Stop	 Duration 
+288	458	171
+488	859	372
+11184	12615	1432
+13245	13402	158
+14311	14617	307
+15982	16193	212
+16531	16675	145
+16917	17116	200
+17160	17383	224
+17437	18302	866
+18424	18459	36
+18503	18570	68
+19240	19278	39
+19303	19323	21
+20177	20199	23
+20350	20441	92
+20900	20966	67
+21017	21180	164
+21262	21267	6
+21504	21556	53
+21708	21785	78
+21981	21993	13
+22430	22505	76
+
+>Interact
+Start	 Stop	 Duration 
+3324	3338	15
+
+>Mutual_Approach
+Start	 Stop	 Duration 
+16616	16666	51
+18037	18202	166
+19651	19683	33
+21262	21319	58
+
+>Other_Approach
+Start	 Stop	 Duration 
+7019	7067	49
+7070	7100	31
+12512	12611	100
+12917	12968	52
+16927	16987	61
+17436	17521	86
+19347	19373	27
+20736	20794	59
+21835	22115	281
+22286	22320	35
+
+>Other_Chase
+Start	 Stop	 Duration 
+8323	8374	52
+13077	13145	69
+15646	15699	54
+16167	16218	52
+16713	16739	27
+17794	17831	38
+18247	18438	192
+18727	18745	19
+18900	19132	233
+19851	19950	100
+20000	20142	143
+20187	20332	146
+20895	20998	104
+21374	21463	90
+
+

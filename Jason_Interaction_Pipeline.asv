@@ -1,0 +1,13 @@
+startPath = ''; %path in which the annotaions, DLC data, and other functions are stored
+outputpath = ''; %can be same as startpath
+a
+
+
+for i = 1:num_orgs
+    org_folder = "Annotations"+"/"+files(i).name;
+    num_files = size(org_folder);
+    for file = 1:num_files
+        [path,name,type] = fileparts(org_folder(file).name);
+        if type == '.annot' || type == '.csv'
+    end
+end
