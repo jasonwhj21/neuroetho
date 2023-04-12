@@ -14,10 +14,11 @@ for i = 1:num_folders
     load([path,'/',organism,'/',organism,'XY']);
 %     [rawData,files] = concatinate(org_folder, str);
 %     [rawDatafilt, rawDatafiltlin] = filtInterp(rawData, files, 0.7);
-    velocity = velocities2(rawDatafilt);
-    curvature = curvature_circles(rawDatafilt);
-    [distances,interactions] = distance(rawDatafilt);
+%     velocity = velocities2(rawDatafilt);
+%     curvature = curvature_circles(rawDatafilt);
+    [distances,before_interactions] = distance(rawDatafilt);
+%     flex = flexion(rawDatafilt);
 
-    outputpath = [path,'/',organism,'/',organism,'statistics'];
-    save(outputpath,'curvature','velocity','distances','interactions','-v7.3');
+    outputpath = [path,'/',organism,'/',organism,'before_interactions'];
+    save(outputpath,'before_interactions','-v7.3');
 end

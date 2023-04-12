@@ -94,81 +94,81 @@ end
 % the organisms
 medianVelocities = table(experiment_num, dal_median_velocities, other_median_velocities);
 
-%% Calculate average of median velocities for insect features plot
-
-extractedotherVels = medianVelocities{:, 3};
-otherVel = mean(extractedotherVels, 'omitnan');
-
-
-%%  Plot histogram of velocities
-
-% extract median velocities
-
-velHeader = medianVelocities.Properties.VariableNames;
-dalMedVelIDX = contains(velHeader, 'dal_median_velocities');
-otherMedVelIDX = contains(velHeader, 'other_median_velocities');
-
-% plot histograms
-f = figure;
-nbins = 24;
-subplot(1,2,1)
-% b1 = bar(medianVelocities{:, dalMedVelIDX},'EdgeColor','k','LineWidth',3);
-b1 = histogram(medianVelocities{:, dalMedVelIDX},nbins,'EdgeColor','k','LineWidth',1,...
- 'FaceColor', [0.1 0.1 0.1],'FaceAlpha',.4);
-%'FaceColor', [1 0 0],'FaceAlpha',.4);
-  
-title(['Dalotia + ', otherOrg, ' : Dalotia Median Velocities Across Experiments']);
-
-
-%pretty figure settings
-    %offsetAxes(gca);
-    set(gca, ...
-        'LineWidth', 3,...
-        'XColor', 'k',...
-        'YColor', 'k',...
-        'FontName', 'Arial',...
-        'FontSize', 14,...
-        'Box', 'off');
-    set(gca, 'Color', 'w');
-    set(gcf, 'Color', 'w');
-
-%     xlim([0 2600]);
-%     ylim([0 14]);
-
-          
-subplot(1,2,2)
-% b2 = bar(medianVelocities{:, otherMedVelIDX},'EdgeColor','k','LineWidth',3); 
-b2 = histogram(medianVelocities{:, otherMedVelIDX}, nbins,'EdgeColor','k','LineWidth',1,... ...
- 'FaceColor', [0.1 0.1 0.1],'FaceAlpha',.4 );
-%'FaceColor', [1 0 0],'FaceAlpha',.4);
-  
-title(['Dalotia + ', otherOrg, ' : ', otherOrg, ' Median Velocities Across Experiments']);    
-
-
-%pretty figure settings
-    %offsetAxes(gca);
-    set(gca, ...
-        'LineWidth', 3,...
-        'XColor', 'k',...
-        'YColor', 'k',...
-        'FontName', 'Arial',...
-        'FontSize', 14,...
-        'Box', 'off');
-    set(gca, 'Color', 'w');
-    set(gcf, 'Color', 'w');
-
-%     xlim([0 6500]);
-%     ylim([0 14]);
-
-ax (1) = subplot(1,2,1);
-ax (2) = subplot(1,2,2);
-%linkaxes(ax, 'xy');
-linkaxes(ax, 'y');
-
-
-filename = ['Dalotia and',' ', otherOrg, ' Median Velocities'];
-% saveas(f, fullfile(outputPath, filename),'fig');
-end
-
-% if speed of program becomes a problem, then preallocate arrays and cell
-% arrays
+% %% Calculate average of median velocities for insect features plot
+% 
+% extractedotherVels = medianVelocities{:, 3};
+% otherVel = mean(extractedotherVels, 'omitnan');
+% 
+% 
+% %%  Plot histogram of velocities
+% 
+% % extract median velocities
+% 
+% velHeader = medianVelocities.Properties.VariableNames;
+% dalMedVelIDX = contains(velHeader, 'dal_median_velocities');
+% otherMedVelIDX = contains(velHeader, 'other_median_velocities');
+% 
+% % plot histograms
+% f = figure;
+% nbins = 24;
+% subplot(1,2,1)
+% % b1 = bar(medianVelocities{:, dalMedVelIDX},'EdgeColor','k','LineWidth',3);
+% b1 = histogram(medianVelocities{:, dalMedVelIDX},nbins,'EdgeColor','k','LineWidth',1,...
+%  'FaceColor', [0.1 0.1 0.1],'FaceAlpha',.4);
+% %'FaceColor', [1 0 0],'FaceAlpha',.4);
+%   
+% title(['Dalotia + ', otherOrg, ' : Dalotia Median Velocities Across Experiments']);
+% 
+% 
+% %pretty figure settings
+%     %offsetAxes(gca);
+%     set(gca, ...
+%         'LineWidth', 3,...
+%         'XColor', 'k',...
+%         'YColor', 'k',...
+%         'FontName', 'Arial',...
+%         'FontSize', 14,...
+%         'Box', 'off');
+%     set(gca, 'Color', 'w');
+%     set(gcf, 'Color', 'w');
+% 
+% %     xlim([0 2600]);
+% %     ylim([0 14]);
+% 
+%           
+% subplot(1,2,2)
+% % b2 = bar(medianVelocities{:, otherMedVelIDX},'EdgeColor','k','LineWidth',3); 
+% b2 = histogram(medianVelocities{:, otherMedVelIDX}, nbins,'EdgeColor','k','LineWidth',1,... ...
+%  'FaceColor', [0.1 0.1 0.1],'FaceAlpha',.4 );
+% %'FaceColor', [1 0 0],'FaceAlpha',.4);
+%   
+% title(['Dalotia + ', otherOrg, ' : ', otherOrg, ' Median Velocities Across Experiments']);    
+% 
+% 
+% %pretty figure settings
+%     %offsetAxes(gca);
+%     set(gca, ...
+%         'LineWidth', 3,...
+%         'XColor', 'k',...
+%         'YColor', 'k',...
+%         'FontName', 'Arial',...
+%         'FontSize', 14,...
+%         'Box', 'off');
+%     set(gca, 'Color', 'w');
+%     set(gcf, 'Color', 'w');
+% 
+% %     xlim([0 6500]);
+% %     ylim([0 14]);
+% 
+% ax (1) = subplot(1,2,1);
+% ax (2) = subplot(1,2,2);
+% %linkaxes(ax, 'xy');
+% linkaxes(ax, 'y');
+% 
+% 
+% filename = ['Dalotia and',' ', otherOrg, ' Median Velocities'];
+% % saveas(f, fullfile(outputPath, filename),'fig');
+% end
+% 
+% % if speed of program becomes a problem, then preallocate arrays and cell
+% % arrays

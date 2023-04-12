@@ -7,11 +7,11 @@
 % into account, whereas middle distance is good for ignoring beetle
 % rotation.
 
-function rawDatafiltdistance = distance(rawDatafilt)
+function [rawDatafiltdistance, closeBouts] = distance(rawDatafilt)
 
-expnum = size(rawDatafilt, 1);
+expnum = size(rawDatafilt, 1) ;
 
-rawDatafiltdistance = cell(expnum, 1);   % cell array to return
+rawDatafiltdistance = cell(expnum/2, 1);   % cell array to return
 fps = 60;
 frame2time = (1/fps); %Time conversion from frames to seconds
 
@@ -27,6 +27,18 @@ for i = 1:2:expnum
     otherMidT = [rawDatafilt{i,1}.AntThorax_x, rawDatafilt{i,1}.AntThorax_y, rawDatafilt{i+1,1}.AntThorax_x];
     midDist = vecnorm(dalAbd1T' - otherMidT')';
     headDist = vecnorm(dalHead' - otherMidT')';
-    rawDatafiltdistance{i,1} = table(time_col,midDist,headDist);
-    
+    collision = [min(midDist,headDist)<250 & min(midDist,headDist)>50];
+    collision = [0;0;0;0;0;collision;0;0;0;0;0];
+    interaction_starts = [];
+    interaction_ends = [];
+    for j = 6:rows+5
+        if collision(j) == 1 && any(collision(j-5:j-1)) == false 
+            interaction_starts(end+1) = j-5; %If a time point has a collision but no collision within 5 frames before, then it's the start of a bout
+        end
+        if collision(j) == 1 && any(collision(j+1:j+5)) == false
+            interaction_ends(end+1) = j-5; %If a time point has a collision but no collision within 5 frames after, then it's the end of a bout
+        end
+    end
+    closeBouts{ceil(i/2),1} = table(interaction_starts',interaction_ends');
+    rawDatafiltdistance{ceil(i/2),1} = table(time_col,midDist,headDist);
 end

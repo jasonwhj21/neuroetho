@@ -21,7 +21,9 @@ for i = 1:2:expnum
     for j = 1:rows
         angle = subspace(vDB(j,:)', uDB(j,:)');
         angles(j) = angle;
-        
+        if any(isnan([Abd1(j,:),Ely(j,:),Abd3(j,:)]))
+            angles(j) = NaN;
     end
+    
     dalFlexAngles{ceil(i/2),1} = table(time_col, angles, Ely,Abd1, Abd3);
 end

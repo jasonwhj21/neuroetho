@@ -1,4 +1,4 @@
-%% Dal-Ant Freely Behaving Analysis
+ %% Dal-Ant Freely Behaving Analysis
 % 221020
 %note: updated plotTraj from previous analysis pipeline
 

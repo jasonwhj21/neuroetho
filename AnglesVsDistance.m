@@ -1,4 +1,49 @@
-load('Beetle_Learning_MATLAB/DalAnt_wt/xyDataFilt_wtOrcoDalLioAnt.mat');
+if exist('rawDatafilt', 'var') == 0
+    load('/Users/jasonwong/Projects/Beetle_Learning_MATLAB/DalAnt_wt/xyDataFilt_wtOrcoDalLioAnt.mat');
+end
+
+annotation = readmatrix('/Users/jasonwong/Projects/neuroetho/Test_Expeirment_DalLio.annot', 'FileType','text');
+behaviors = ['Dal_Approach', 'Other_Approach','Mutual_Approach'];
+velocity = velocities2(rawDatafilt,'Ant');
+velocity_test = velocity{1};
+curve = curvature_circles(rawDatafilt);
+curve_test = curve{1};
+[rows,columns] = find(isnan(annotation));
+starts = unique(rows);
+annotations = struct;
+annotations.dal_approach = annotation(1:starts(1)-1,1:2);
+annotations.flexing = annotation(starts(2)+1:starts(3)-1,1:2);
+annotations.mutual_approach = annotation(starts(4)+1:starts(5)-1, 1:2);
+annotations.other_approach = annotation(starts(6)+1:starts(7)-1, 1:2);
+annotations.interact = annotation(starts(8)+1:end,1:2);
+
 testSet = rawDatafilt(1:2);
 angles = flexion(testSet);
-distance = distance(testSet);
+distances = distance(testSet);
+d= [];
+a=[];
+a_avg = [];
+angles_before_interaction = [];
+v_avg = [];
+flee_avg = [];
+c_avg = []
+for bout = 1:size(annotations(1).interact,1)
+     start = annotations(1).interact(bout,1);
+     ending = annotations(1).interact(bout,2);
+     avg_angle = mean(angles{1}.angles(start:ending));
+     avg_velocity = mean(velocity_test.other_velocities(start-60:start));
+     flee_velocity = mean(velocity_test.dalotia_velocities(ending:ending+60));
+     path_curve = mean(curve_test.other_curvatures(start-60:start));
+     v_avg(end+1) = avg_velocity;
+     a_avg(end+1) = avg_angle;
+     flee_avg(end+1) = flee_velocity;
+     c_avg(end+1)= path_curve;
+     d= cat(1,d,distances{1}.midDist(start:ending));
+     a = cat(1,a,angles{1}.angles(start:ending));
+
+end
+
+subplot(1,2,1)
+scatter(distances{1}.time_col,distances{1}.midDist);
+subplot(1,2,2)
+scatter(c_avg, flee_avg);

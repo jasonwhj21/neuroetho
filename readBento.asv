@@ -1,7 +1,0 @@
-annotation = readmatrix('Test_Expeirment_DalLio.annot', 'FileType','text');
-behaviors = ['Dal_Approach', 'Dal_Chase','Flexing', 'Interact','Mutual_Approach']
-annotations = dictionary()
-starts = find(isnan(annotation));
-for i = 2:2:size(starts)
-    annotations(behavior(i/2))
-end

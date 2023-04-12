@@ -16,12 +16,15 @@ for i = 1:2:expnum
       %calculate abdomen flexion angle
     vDB = Ely - Abd1;
     uDB = Abd3 - Abd1;
-    vDB(isnan(vDB)) = 0;
-    uDB(isnan(uDB)) = 0;
+%     vDB(isnan(vDB)) = 0;
+%     uDB(isnan(uDB)) = 0;
     for j = 1:rows
-        angle = subspace(vDB(j,:)', uDB(j,:)');
-        angles(j) = angle;
-        
+        dotted = dot(vDB(j,:), uDB(j,:))/(vecnorm(vDB(j,:))* vecnorm(uDB(j,:)));
+        angles(j) = acos(dotted);
+        %if any(isnan([Abd1(j,:),Ely(j,:),Abd3(j,:)]))
+        %    angles(j) = NaN;
+        %end
     end
+    
     dalFlexAngles{ceil(i/2),1} = table(time_col, angles, Ely,Abd1, Abd3);
 end

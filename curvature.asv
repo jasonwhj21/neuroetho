@@ -60,15 +60,14 @@ for i = 1:expnum
         other_velocities((j-1)/5,:) = other_velocity;
         
     end
-    for j = 1:size(dal_velocities,1)-1
+    for j = 1:size(dal_velocities,1)
     
         dotted_dal = dot(dal_velocities(j,:), dal_velocities(j+1,:))/(vecnorm(dal_velocities(j,:))* vecnorm(dal_velocities(j+1,:)));
         dal_angular_speed = acos(dotted_dal)/(frame2time*5); 
-        dotted_other = dot(other_velocities(j,:), other_velocities(j+1,:))/(vecnorm(other_velocities(j,:))* vecnorm(other_velocities(j+1,:)));
-        other_angular_speed = acos(dotted_other)/(frame2time*5); 
+        other_angular_speed = subspace(other_velocities(n,:)',other_velocities(n+1,:)')/(frame2time*5);
         dal_curvatures(j,1) = dal_angular_speed;
         other_curvatures(j,1) = other_angular_speed; %Angular speeds are in units of radians per second
         
     end
-    rawDatafiltcurvature{i,1} = table(time_col(1:size(dal_curvatures)), dal_curvatures, other_curvatures); %Finally, experiment i is complete and the cell is updated.
+    rawDatafiltcurvature{i,1} = table(time_col(1:end-2), dal_curvatures, other_curvatures); %Finally, experiment i is complete and the cell is updated.
 end
