@@ -12,13 +12,17 @@ for i = 1:num_folders
     organism = folders(i).name
     org_folder = [folders(i).folder,'/',organism];
     load([path,'/',organism,'/',organism,'XY']);
-%     [rawData,files] = concatinate(org_folder, str);
-%     [rawDatafilt, rawDatafiltlin] = filtInterp(rawData, files, 0.7);
-%     velocity = velocities2(rawDatafilt);
-%     curvature = curvature_circles(rawDatafilt);
-    [distances,before_interactions] = distance(rawDatafilt);
-%     flex = flexion(rawDatafilt);
+     [rawData,files] = concatinate(org_folder, str);
+     [rawDatafilt, rawDatafiltlin] = filtInterp(rawDatafilt, files, 0.7);
+     velocitylin = velocities2(rawDatafilt);
+     curvaturelin = curvature_circles(rawDatafilt);
+    [distanceslin,interactionslin] = distance(rawDatafiltlin,0,75);
+    [distanceslin,before_interactionslin] = distance(rawDatafiltlin,75,250);
+    [distanceslin,long_dist_interactionslin] = distance(rawDatafiltlin,0,250);
+     flexlin = flexion(rawDatafiltlin);
 
-    outputpath = [path,'/',organism,'/',organism,'before_interactions'];
-    save(outputpath,'before_interactions','-v7.3');
+    outputpath = [path,'/',organism,'/',organism,'XYLin'];
+    save(outputpath,'rawDatafiltlin','-v7.3');
+    outputpath2 = [path,'/',organism,'/',organism,'statisticslin'];
+    save(outputpath2,'distanceslin','velocitylin','curvaturelin','flexlin','interactionslin','before_interactionslin','long_dist_interactionslin','-v7.3');
 end

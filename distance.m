@@ -7,7 +7,7 @@
 % into account, whereas middle distance is good for ignoring beetle
 % rotation.
 
-function [rawDatafiltdistance, closeBouts] = distance(rawDatafilt)
+function [rawDatafiltdistance, closeBouts] = distance(rawDatafilt,minDist,maxDist)
 
 expnum = size(rawDatafilt, 1) ;
 
@@ -27,7 +27,7 @@ for i = 1:2:expnum
     otherMidT = [rawDatafilt{i,1}.AntThorax_x, rawDatafilt{i,1}.AntThorax_y, rawDatafilt{i+1,1}.AntThorax_x];
     midDist = vecnorm(dalAbd1T' - otherMidT')';
     headDist = vecnorm(dalHead' - otherMidT')';
-    collision = [min(midDist,headDist)<250 & min(midDist,headDist)>50];
+    collision = [min(midDist,headDist)<maxDist & min(midDist,headDist)>minDist];
     collision = [0;0;0;0;0;collision;0;0;0;0;0];
     interaction_starts = [];
     interaction_ends = [];
