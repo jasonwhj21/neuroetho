@@ -1,7 +1,7 @@
 path = '/Users/jasonwong/Projects/Beetle_Learning_MATLAB/Organism_CSVs';
 folders = dir([path,'/','Dal_*']);
 num_folders = size(folders,1);
-folder_nums = [1:11];
+folder_nums = [1:12];
 approach_speed = [];
 flex_during =[];
 flex_after = [];
@@ -14,8 +14,7 @@ for k = 1:size(folder_nums,2)
     organism = folders(folder_nums(k)).name;
     load([path,'/',organism,'/',organism,'statistics']);
     load([path,'/',organism,'/',organism,'statisticslin']);
-    load([path,'/',organism,'/',organism,'long_dist_interactions']);
-    load([path,'/',organism,'/',organism,'before_interactions']);
+    end
      if k ==1
         all_flex = vertcat(flex{:});
         all_dist = vertcat(distanceslin{:});
