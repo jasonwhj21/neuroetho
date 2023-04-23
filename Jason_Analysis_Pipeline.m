@@ -92,17 +92,17 @@ subplot(3,4,1)
 
 
 
-% for i = 1:11
-%     subplot(3,4,i+1)
-%     scatter(individual_stats{i}{2},individual_stats{i}{5})
-%     xlabel('Approach speed')
-%     ylabel('Interaction length')
-%     title({[labels{i},folders(i).name,' Avg length: '],mean(individual_stats{i}{8},"omitnan"),' Avg Approach Velocity: ', mean(individual_stats{i}{2},"omitnan")})
-%     xlim([0,10000])
-%     ylim([0,20000])
-% %     colorbar
-% %     ylim([0,7000]);
-% end
+for i = 1:11
+    subplot(3,4,i+1)
+    scatter(individual_stats{i}{2},individual_stats{i}{5})
+    xlabel('Approach speed')
+    ylabel('Interaction length')
+    title({[labels{i},folders(i).name,' Avg length: '],mean(individual_stats{i}{8},"omitnan"),' Avg Approach Velocity: ', mean(individual_stats{i}{2},"omitnan")})
+    xlim([0,10000])
+    ylim([0,20000])
+%     colorbar
+%     ylim([0,7000]);
+end
 
 
 sgtitle('Bouts of Closeness Orientation > 20') 

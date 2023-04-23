@@ -64,10 +64,10 @@ for k = 1:size(folder_nums,2)
     orientation = [orientation,orientation_temp];
     length = [length,length_temp];
 end
-flex1 = flex_during(approach_speed<10000 & orientation>0);
-flex2 = flex_during(approach_speed>10000 & approach_speed<20000 & orientation >0);
-flex3 = flex_during(approach_speed>20000 & approach_speed<30000 & orientation >0);
-flex4 = flex_during(approach_speed>30000 & orientation >0);
+flex1 = flex_during(approach_speed<10000 & orientation >20);
+flex2 = flex_during(approach_speed>10000 & approach_speed<20000 & orientation >20);
+flex3 = flex_during(approach_speed>20000 & approach_speed<30000 & orientation >20);
+flex4 = flex_during(approach_speed>30000 & orientation >20);
 dist = vertcat(distances{:,1});
 flexion = vertcat(flex{:,1});
 
@@ -92,20 +92,20 @@ subplot(3,4,1)
 
 
 
-% for i = 1:11
-%     subplot(3,4,i+1)
-%     scatter(individual_stats{i}{2},individual_stats{i}{5})
-%     xlabel('Approach speed')
-%     ylabel('Interaction length')
-%     title({[labels{i},folders(i).name,' Avg length: '],mean(individual_stats{i}{8},"omitnan"),' Avg Approach Velocity: ', mean(individual_stats{i}{2},"omitnan")})
-%     xlim([0,10000])
-%     ylim([0,20000])
-% %     colorbar
-% %     ylim([0,7000]);
-% end
+for i = 1:11
+    subplot(3,4,i+1)
+    scatter(individual_stats{i}{2},individual_stats{i}{5})
+    xlabel('Approach speed')
+    ylabel('Interaction length')
+    title({[labels{i},folders(i).name,' Avg length: '],mean(individual_stats{i}{8},"omitnan"),' Avg Approach Velocity: ', mean(individual_stats{i}{2},"omitnan")})
+    xlim([0,10000])
+    ylim([0,20000])
+%     colorbar
+%     ylim([0,7000]);
+end
 
 
-sgtitle('Subplot Grid Title') 
+sgtitle('Bouts of Closeness Orientation > 20') 
 subplot(2,2,1)
 histfit(flex1./max_flex,10,'beta')
 xlabel('Flex angle (radians)')
