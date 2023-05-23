@@ -24,10 +24,13 @@ for i = 1:2:expnum
     % x- and y- are from base and z- position is from mirror
     dalAbd1T = [rawDatafilt{i,1}.DalotiaAbdomen1_x, rawDatafilt{i,1}.DalotiaAbdomen1_y, rawDatafilt{i+1,1}.DalotiaAbdomen1_x];
     dalHead = [rawDatafilt{i,1}.DalotiaHead_x, rawDatafilt{i,1}.DalotiaHead_y, rawDatafilt{i+1,1}.DalotiaHead_x];
-    otherMidT = [rawDatafilt{i,1}.AntThorax_x, rawDatafilt{i,1}.AntThorax_y, rawDatafilt{i+1,1}.AntThorax_x];
-    midDist = vecnorm(dalAbd1T' - otherMidT')';
-    headDist = vecnorm(dalHead' - otherMidT')';
-    collision = [min(midDist,headDist)<maxDist & min(midDist,headDist)>minDist];
+    AntThoraxT = [rawDatafilt{i,1}.AntThorax_x, rawDatafilt{i,1}.AntThorax_y, rawDatafilt{i+1,1}.AntThorax_x];
+    AntHeadT = [rawDatafilt{i,1}.AntHead_x, rawDatafilt{i,1}.AntHead_y, rawDatafilt{i+1,1}.AntHead_x];
+    midDist = vecnorm(dalAbd1T' - AntThoraxT')';
+    headDist = vecnorm(dalHead' - AntThoraxT')';
+    midHead = vecnorm(dalAbd1T' - AntHeadT')';
+    headHead = vecnorm(dalHead' - AntHeadT')';
+    collision = [min([midDist,headDist,midHead,headHead,midHead],[],2)<maxDist & min([midDist,headDist,headHead,midHead],[],2)>minDist];
     collision = [0;0;0;0;0;collision;0;0;0;0;0];
     interaction_starts = [];
     interaction_ends = [];
@@ -40,5 +43,5 @@ for i = 1:2:expnum
         end
     end
     closeBouts{ceil(i/2),1} = table(interaction_starts',interaction_ends');
-    rawDatafiltdistance{ceil(i/2),1} = table(time_col,midDist,headDist);
+    rawDatafiltdistance{ceil(i/2),1} = table(time_col,midDist,headDist,midHead,headHead);
 end

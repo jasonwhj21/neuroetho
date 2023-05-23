@@ -22,6 +22,7 @@ fps = 60;
 frame2time = (1/fps); %Time conversion from frames to seconds
 for i = 1:2:expnum
     data = rawDatafilt{i, 1};
+    data2 = rawDatafilt{i+1, 1};
     rows = size(data, 1);
     frame_nums = [1:rows]';
     time_col = frame_nums * frame2time;     % time column
@@ -29,10 +30,10 @@ for i = 1:2:expnum
     
     dal_positions_x = data.DalotiaAbdomen1_x; %x and y positions; can be replaces with the head position later
     dal_positions_y = data.DalotiaAbdomen1_y;
-    dal_positions_z = data.DalotiaAbdomen1_x;
+    dal_positions_z = data2.DalotiaAbdomen1_x;
     other_positions_x = data.AntThorax_x;
     other_positions_y = data.AntThorax_y;
-    other_positions_z = data.AntThorax_x;
+    other_positions_z = data2.AntThorax_x;
 
    
     dal_curvatures = zeros(rows-2,1); %Curvatures of insect paths

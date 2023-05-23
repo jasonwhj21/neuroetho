@@ -1,5 +1,5 @@
 str = '_filtered.csv';
-path = '/Users/jasonwong/Projects/Beetle_Learning_MATLAB/Organism_CSVs'
+path = '/Users/jasonwong/Projects/Beetle_Learning_MATLAB/_CSVs'
 folders = dir([path,'/','Dal_*']);
 % load('/Users/jasonwong/Projects/Beetle_Learning_BENTO/Annotations_to_match_with_Jess/Dal_Solenopsis_2/Solenopsis_2Filt.mat');
 % curves = curvature_circles(rawDatafilt);
@@ -9,7 +9,7 @@ folders = dir([path,'/','Dal_*']);
 % save(outputpath,'curves','distances','velocity','-v7.3')
 % which = [1];
 num_folders = size(folders,1);
-for i = 1:num_folders
+for i = [7,8]
     
      organism = folders(i).name
      org_folder = [folders(i).folder,'/',organism];
