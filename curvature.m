@@ -32,8 +32,8 @@ for i = 1:expnum
     
     dal_positions_x = data.DalotiaAbdomen1_x; %x and y positions; can be replaces with the head position later
     dal_positions_y = data.DalotiaAbdomen1_y;
-    other_positions_x = data.AntThorax_x;
-    other_positions_y = data.AntThorax_y;
+    other_positions_x = data.OtherMid_x;
+    other_positions_y = data.OtherMid_y;
 
     dal_velocities = zeros(rows-1,2); %Velocities of insects
     other_velocities = zeros(rows-1, 2);

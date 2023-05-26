@@ -33,8 +33,8 @@ experiment_num = [1:expnum]';          % for medianVelocities table
 dalAbdXIdx = contains(header, 'DalotiaAbdomen1_x');
 dalAbdYIdx = contains(header, 'DalotiaAbdomen1_y');
 
-otherMidXIdx = contains(header, 'AntThorax_x');
-otherMidYIdx = contains(header, 'AntThorax_y');
+AntThoraxXIdx = contains(header, 'AntThorax_x');
+AntThoraxYIdx = contains(header, 'AntThorax_y');
 
 rawDatafiltVelocities = cell(expnum, 1);    % cell array to return
 
@@ -58,8 +58,8 @@ for i = 1:expnum
     % cell indexing all at once bc cell indexing takes time (in for loop)
     dal_positions_x = data{:, dalAbdXIdx};
     dal_positions_y = data{:, dalAbdYIdx};
-    other_positions_x = data{:, otherMidXIdx};
-    other_positions_y = data{:, otherMidYIdx};
+    other_positions_x = data{:, AntThoraxXIdx};
+    other_positions_y = data{:, AntThoraxYIdx};
 
     for j = 1:rows-1
         
