@@ -3,7 +3,7 @@ folders = dir([path,'/','Dal_*']);
 num_folders = size(folders,1);
 ant_folder_nums = [1,2,3,6,9,12,13];
 other_folder_nums = [4,5,7,8,10,11];
-all_folder_nums = 1:13;
+all_folder_nums = 1
 approach_speed = [];
 flex_during =[];
 flex_after = [];
@@ -81,4 +81,15 @@ for k = 1:size(all_folder_nums,2)
     dal_approach_speed = [dal_approach_speed,dal_approach_speed_temp];
     other_velocity_after = [other_velocity_after, other_velocity_after_temp];
     other_orientation = [other_orientation, other_orientation_temp];
+    %1. Organism
+    %2. Approach_speed (-10 frames)
+    %3. Flex_during (-60 frames)
+    %4. Flex_after (90 frames after)
+    %5. Dal_velocity_after (10 frames)
+    %6. Curvature (-90 frames)
+    %7. Orientation (-10 frames)
+    %8. Length of Interaction
+    %9. Dal_approach_speed (-10 frames)
+    %10. Other_velocity_after (10 frames)
+    %11. Other_orientation (-10 frames)
 end

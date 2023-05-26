@@ -10,20 +10,7 @@ max_flex = max(flex_during)
 set(0,'defaultAxesFontSize',15)
 
 
-other_app = approach_speed >= dal_approach_speed;
-% other_app_dal_leave = approach_speed > dal_approach_speed & other_velocity_after < dal_velocity_after   ;
-dal_app = approach_speed < dal_approach_speed;
-% dal_app_dal_leave = approach_speed < dal_approach_speed & other_velocity_after < dal_velocity_after ;
-% subplot(1,2,1)
-% scatter(approach_speed(other_app & orientation>0),length(other_app & orientation>0))
-% title(["Int: Other Approach with Positive orientation", "Avg Length: ", mean(length(other_app & orientation>0),'omitnan')])
-% xlabel('Other Approach Speed')
-% ylabel('Length')
-% subplot(1,2,2)
-% scatter(approach_speed(other_app & ~isnan(orientation)),length(other_app & ~isnan(orientation)))
-% title(["Int: Other Approach", "Avg Length: ", mean(length(other_app & ~isnan(orientation)),'omitnan')])
-% xlabel('Other Approach Speed')
-% ylabel('Length')
+%%
 
 
 % subplot(2,2,1)
@@ -38,9 +25,8 @@ dal_app = approach_speed < dal_approach_speed;
 % subplot(2,2,4)
 % histogram(all_interaction_velocities.dalotia_velocities)
 % xlim([0,40000])
+%%
 
-
-% subplot(2,4,1)
 % avgSpeed = [];
 % avgFlex = [];
 % stats2 = [];
@@ -85,7 +71,7 @@ dal_app = approach_speed < dal_approach_speed;
 
 
 
-
+%%
 scatter(avgSpeed(ant_folder_nums),avgFlex(ant_folder_nums))
 labels = {'M','M','L','L','M','S','S'};
 z = labelpoints(avgSpeed(ant_folder_nums),avgFlex(ant_folder_nums),labels,'N');
@@ -107,7 +93,7 @@ ylabel('Escape Velocity (Pixels per minute)')
 % all = zeros(13,2);
 
 
-
+%%
 % 
 % names = categorical({'Acromyrmex','Ant','Ant (orco)','Formica','Large Liometompum', 'Small Liometopum','Solenopsis', ...
 %     'Bean Beetle', 'DMel', 'Fungus Gnat', 'Isopod', 'Mealworm','Pirate Bug'});
@@ -145,16 +131,4 @@ ylabel('Escape Velocity (Pixels per minute)')
 %     end
 %     hold on
 % end
-
-% sgtitle("Other Species Interaction Length vs Approach Velocity at Distance <150")
-% for org = 1:13
-%     facing = ~isnan(individual_stats{org}{7});
-%     avgSpeed = size(individual_stats{org}{2}(facing),2);
-%    
-%     if any(ant_folder_nums == org)
-%         scatter(org,avgSpeed, 20, "filled", "b")
-%     else
-%         scatter(org, avgSpeed, 20, "filled", "r")
-%     end
-%     hold on
-% end
+%%
