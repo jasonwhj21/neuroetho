@@ -3,7 +3,7 @@ folders = dir([path,'/','Dal_*']);
 num_folders = size(folders,1);
 ant_folder_nums = [1,2,3,6,9,12,13];
 other_folder_nums = [4,5,7,8,10,11];
-all_folder_nums = 1
+all_folder_nums = 1:13;
 approach_speed = [];
 flex_during =[];
 flex_after = [];
@@ -15,8 +15,8 @@ dal_approach_speed = [];
 other_velocity_after = [];
 other_orientation = [];
 max_length = 0;
-for k = 1:size(all_folder_nums,2)
-    organism = folders(all_folder_nums(k)).name;
+for k = 1:size(other_folder_nums,2)
+    organism = folders(other_folder_nums(k)).name;
     load([path,'/',organism,'/',organism,'statistics']);
     load([path,'/',organism,'/',organism,'statisticslin']);
     

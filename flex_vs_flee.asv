@@ -1,0 +1,14 @@
+flex_interactions = (flex_during < 1.75 | flex_after < 1.75 & ~dal_velocity_after > 500);
+flee_interactions = (dal_velocity_after > 500 & ~(flex_during < 1.75 | flex_after < 1.75));
+both_interactions = (flex_during < 1.75 | flex_after < 1.75)&(dal_velocity_after>500);
+neither_interactions = ~(flex_interactions | flee_interactions | both_interactions);
+
+
+set(0,'defaultAxesFontSize',15)
+types = categorical({'Flex','Flee','Both','Neither', 'All'});
+types = reordercats(types, {'Flex','Flee','Both','Neither', 'All'});
+cat_orientations= [mean(orientation(flex_interactions),"omitnan"),mean(orientation(flee_interactions),"omitnan"),mean(orientation(both_interactions),"omitnan"),mean(orientation(neither_interactions),"omitnan"),""];
+
+
+bar(types,cat_orientations)
+title("Average Orientation By Type of Bout")
