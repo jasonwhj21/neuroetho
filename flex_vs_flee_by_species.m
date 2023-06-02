@@ -1,7 +1,9 @@
 names = categorical({'Acromyrmex','Ant','Ant (orco)','Formica','Large Liometompum', 'Small Liometopum','Solenopsis', ...
-    'Bean Beetle', 'DMel', 'Fungus Gnat', 'Isopod', 'Mealworm','Pirate Bug'});
+    'Bean Beetle', 'DMel', 'Fungus Gnat', 'Isopod', 'Mealy Bug Destroyer','Pirate Bug'});
 names = reordercats(names,{'Acromyrmex','Ant','Ant (orco)','Formica','Large Liometompum', 'Small Liometopum','Solenopsis', ...
-    'Bean Beetle', 'DMel', 'Fungus Gnat', 'Isopod', 'Mealworm','Pirate Bug'});
+    'Bean Beetle', 'DMel', 'Fungus Gnat', 'Isopod', 'Mealy Bug Destroyer','Pirate Bug'});
+all = zeros(13,3);
+SEM_all = zeros(13,3);
 for j = 1:size(ant_folder_nums,2)
     org = ant_folder_nums(j);
     flex_interactions = ((individual_stats{org}{3} < 1.75 | individual_stats{org}{4} < 1.75) & individual_stats{org}{5} <= 20000);
