@@ -14,6 +14,7 @@ length = [];
 dal_approach_speed = [];
 other_velocity_after = [];
 other_orientation = [];
+min_flex = [];
 max_length = 0;
 for k = 1:size(ant_folder_nums,2)
     organism = folders(ant_folder_nums(k)).name;
@@ -41,6 +42,7 @@ for k = 1:size(ant_folder_nums,2)
     dal_approach_speed_temp = [];
     other_velocity_after_temp = [];
     other_orientation_temp = [];
+    min_flex_temp = [];
     for i = 1:size(interactions,1)
             long_interactions = interactionslin{i}((interactionslin{i}.Var2 - interactionslin{i}.Var1)> 0,:);
          long_long_interactions = long_dist_interactionslin{i}((long_dist_interactionslin{i}.Var2 - long_dist_interactionslin{i}.Var1)>0,:);
@@ -58,6 +60,7 @@ for k = 1:size(ant_folder_nums,2)
             approach_speed_temp(end+1) = mean(velocitylin{2*i-1}.other_velocities(max(starts-10,1):starts,1),'omitnan');
             flex_during_temp(end+1) = mean(flex{i}.angles(max(starts-60,1):min(endings,size(flex{i})),1),'omitnan');
             flex_after_temp(end+1) = mean(flex{i}.angles(endings:min(endings+90,size(flex{i})),1),"omitnan");
+            min_flex_temp (end+1) = min(flex{i}.angles(max(starts-60,1):min(endings,size(flex{i})),1));
             dal_velocity_after_temp(end+1) = mean(velocitylin{2*i-1}.dalotia_velocities(endings:min(endings+10,size(velocitylin{2*i-1})),1),"omitnan");
             curve_temp(end+1)= mean(curvature{i}.other_curvatures(max(starts-90,1):starts,1),'omitnan');
             orientations = distances{i}.midDist - distances{i}.headDist;
@@ -69,10 +72,11 @@ for k = 1:size(ant_folder_nums,2)
         end
         
     end
-    individual_stats{k,1} = {organism, approach_speed_temp,flex_during_temp,flex_after_temp,dal_velocity_after_temp,curve_temp,orientation_temp,length_temp, dal_approach_speed_temp,other_velocity_after_temp,other_orientation_temp}; 
+    individual_stats{k,1} = {organism, approach_speed_temp,flex_during_temp,flex_after_temp,min_flex,dal_velocity_after_temp,curve_temp,orientation_temp,length_temp, dal_approach_speed_temp,other_velocity_after_temp,other_orientation_temp}; 
     approach_speed = [approach_speed,approach_speed_temp];
     flex_during =[flex_during,flex_during_temp];
     flex_after = [flex_after,flex_after_temp];
+    min_flex = [min_flex,min_flex_temp];
     dal_velocity_after = [dal_velocity_after,dal_velocity_after_temp];
     curve = [curve,curve_temp];
     orientation = [orientation,orientation_temp];
@@ -85,11 +89,12 @@ for k = 1:size(ant_folder_nums,2)
     %2. Approach_speed (-10 frames)
     %3. Flex_during (-60 frames)
     %4. Flex_after (90 frames after)
-    %5. Dal_velocity_after (10 frames)
-    %6. Curvature (-90 frames)
-    %7. Orientation (-10 frames)
-    %8. Length of Interaction
-    %9. Dal_approach_speed (-10 frames)
-    %10. Other_velocity_after (10 frames)
-    %11. Other_orientation (-10 frames)
+    %5. min_flex(60 frames)
+    %6. Dal_velocity_after (10 frames)
+    %7. Curvature (-90 frames)
+    %8. Orientation (-10 frames)
+    %9. Length of Interaction
+    %10. Dal_approach_speed (-10 frames)
+    %11. Other_velocity_after (10 frames)
+    %12. Other_orientation (-10 frames)
 end

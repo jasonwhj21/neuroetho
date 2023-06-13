@@ -94,31 +94,31 @@ ylabel('Escape Velocity (Pixels per minute)')
 
 
 %%
-% 
-% names = categorical({'Acromyrmex','Ant','Ant (orco)','Formica','Large Liometompum', 'Small Liometopum','Solenopsis', ...
-%     'Bean Beetle', 'DMel', 'Fungus Gnat', 'Isopod', 'Mealworm','Pirate Bug'});
-% names = reordercats(names,{'Acromyrmex','Ant','Ant (orco)','Formica','Large Liometompum', 'Small Liometopum','Solenopsis', ...
-%     'Bean Beetle', 'DMel', 'Fungus Gnat', 'Isopod', 'Mealworm','Pirate Bug'});
-% for j = 1:size(ant_folder_nums,2)
-%     org = ant_folder_nums(j);
-%     facing = (individual_stats{org}{7}>0);
-%     how_long_facing = mean(individual_stats{org}{8}(facing));
-%     how_long_not_facing = mean(individual_stats{org}{8}(~facing));
-%     all(j,:) = [how_long_facing, how_long_not_facing];
-% end
-% 
-% for i = 1:size(other_folder_nums,2)
-%     org = other_folder_nums(i);
-%     facing = (individual_stats{org}{7}>0);
-%     how_long_facing = mean(individual_stats{org}{8}(facing));
-%     how_long_not_facing = mean(individual_stats{org}{8}(~facing));
-%     all(7+i,:) = [how_long_facing, how_long_not_facing];
-% end
-% 
-% bar(names,all)
-% legend('Orientation > 0 (facing)', 'Orientation < 0 (non-Facing)')
-% title('Average Interaction Length at Distance <125 For Different Orientations')
-% ylabel('Interaction Length')
+
+names = categorical({'Acromyrmex','Ant','Ant (orco)','Formica','Large Liometompum', 'Small Liometopum','Solenopsis', ...
+    'Bean Beetle', 'DMel', 'Fungus Gnat', 'Isopod', 'Mealworm','Pirate Bug'});
+names = reordercats(names,{'Acromyrmex','Ant','Ant (orco)','Formica','Large Liometompum', 'Small Liometopum','Solenopsis', ...
+    'Bean Beetle', 'DMel', 'Fungus Gnat', 'Isopod', 'Mealworm','Pirate Bug'});
+for j = 1:size(ant_folder_nums,2)
+    org = ant_folder_nums(j);
+    facing = (individual_stats{org}{7}>0);
+    how_long_facing = mean(individual_stats{org}{8}(facing));
+    how_long_not_facing = mean(individual_stats{org}{8}(~facing));
+    all(j,:) = [how_long_facing, how_long_not_facing];
+end
+
+for i = 1:size(other_folder_nums,2)
+    org = other_folder_nums(i);
+    facing = (individual_stats{org}{7}>0);
+    how_long_facing = mean(individual_stats{org}{8}(facing));
+    how_long_not_facing = mean(individual_stats{org}{8}(~facing));
+    all(7+i,:) = [how_long_facing, how_long_not_facing];
+end
+
+bar(names,all)
+legend('Orientation > 0 (facing)', 'Orientation < 0 (non-Facing)')
+title('Average Interaction Length at Distance <125 For Different Orientations')
+ylabel('Interaction Length')
 
 % subplot(4,7,28)
 % for org = 1:13
