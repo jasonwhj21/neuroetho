@@ -52,8 +52,8 @@ for k = 1:size(ant_folder_nums,2)
         for j = 1:size(long_long_interactions)
             starts = long_long_interactions.Var1(j,1);
             endings = long_long_interactions.Var2(j,1);
-            all_interaction_velocities = vertcat(all_interaction_velocities, velocitylin{2*j-1}(starts:endings,:));
-            all_flex = vertcat(all_flex, all_flex(j))
+            all_interaction_velocities = vertcat(all_interaction_velocities, velocitylin{2*i-1}(starts:endings,:));
+            all_flex = vertcat(all_flex, flex{i}(starts:endings,:));
             length_temp(end+1) = endings-starts;
             if (endings-starts) > max_length
                 max_length = endings - starts;

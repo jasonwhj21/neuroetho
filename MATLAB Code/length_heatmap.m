@@ -1,6 +1,6 @@
-   flex_interactions = ((flex_during < 1.75 | flex_after < 1.75) & dal_velocity_after <= 20000);
-flee_interactions = (dal_velocity_after > 20000 & (flex_during >= 1.75 & flex_after >= 1.75));
-both_interactions = ((flex_during < 1.75 | flex_after < 1.75) & dal_velocity_after>20000);
+flex_interactions = ((flex_during < 1.75 | flex_after < 1.75 | min_flex<1.75) & dal_velocity_after <= 20000);
+flee_interactions = (dal_velocity_after > 20000 & (flex_during >= 1.75 & flex_after >= 1.75 & min_flex >= 1.75));
+both_interactions = ((flex_during < 1.75 | flex_after < 1.75 | min_flex < 1.75) & dal_velocity_after>20000);
 neither_interactions = ~(flex_interactions | flee_interactions | both_interactions);
 
 approach_divs = linspace(0,40000,10);

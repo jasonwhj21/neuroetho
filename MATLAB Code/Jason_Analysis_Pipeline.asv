@@ -16,19 +16,19 @@ other_velocity_after = [];
 other_orientation = [];
 min_flex = [];
 max_length = 0;
-for k = 1:size(ant_folder_nums,2)
-    organism = folders(ant_folder_nums(k)).name;
+for k = 1:size(_ants_folder_nums,2)
+    organism = folders(other_folder_nums(k)).name;
     load([path,'/',organism,'/',organism,'statistics']);
     load([path,'/',organism,'/',organism,'statisticslin']);
     
      if k ==1
-        all_flex = vertcat(flex{:});
+        all_flex = [];
         all_dist = vertcat(distanceslin{:});
         all_vel = vertcat(velocitylin{1:2:end});
         all_interaction_velocities = [];
         
      else
-        all_flex = vertcat(all_flex, flex{:});
+        
         all_dist = vertcat(all_dist,distanceslin{:});
         all_vel = vertcat(all_vel, velocitylin{1:2:end});
      end
@@ -53,6 +53,7 @@ for k = 1:size(ant_folder_nums,2)
             starts = long_long_interactions.Var1(j,1);
             endings = long_long_interactions.Var2(j,1);
             all_interaction_velocities = vertcat(all_interaction_velocities, velocitylin{2*i-1}(starts:endings,:));
+            all_flex = vertcat(all_flex, flex{i}(starts:endings,:));
             length_temp(end+1) = endings-starts;
             if (endings-starts) > max_length
                 max_length = endings - starts;
