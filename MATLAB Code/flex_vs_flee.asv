@@ -13,8 +13,7 @@ cat_approach_speed_ants = [mean(approach_speed(flex_interactions ),"omitnan"),me
 cat_approach_speed = [cat_approach_speed_ants;cat_approach_speed_other]';
 fig = figure('units','inch','position',[0,0,10,10]);
 b = bar(types,cat_approach_speed)
-
-titles = "Average approach speed By Type of Bout"
+titles = "Average approach speed By Type of Bout (Other)"
 title(titles)
 
 SEM_ants= [std(approach_speed(flex_interactions ),"omitnan")/sqrt(size(approach_speed(flex_interactions ),2)),
@@ -34,5 +33,4 @@ model_error =[SEM_ants, SEM_other];
 % Plot the errorbars
 errorbar(x',cat_approach_speed,model_error,'k','linestyle','none');
 hold off
-legend('Ants','Others')
 saveas(gcf,'/Users/jasonwong/Projects/neuroetho/Ant Graphs/'+ titles + '.png')

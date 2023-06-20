@@ -1,4 +1,4 @@
-clear
+
 path = '/Users/jasonwong/Projects/Beetle_Learning_MATLAB/Organism_CSVs';
 folders = dir([path,'/','Dal_*']);
 num_folders = size(folders,1);

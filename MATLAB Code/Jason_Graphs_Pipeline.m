@@ -72,12 +72,12 @@ set(0,'defaultAxesFontSize',15)
 
 
 %%
-scatter(avgSpeed(ant_folder_nums),avgFlex(ant_folder_nums))
-labels = {'M','M','L','L','M','S','S'};
-z = labelpoints(avgSpeed(ant_folder_nums),avgFlex(ant_folder_nums),labels,'N');
-title({'Average Approach Speed vs', 'Average Escape Velocity (Ants Only, Interaction Dist <125)'})
-xlabel('Approach speed  (Pixels per minute)')
-ylabel('Escape Velocity (Pixels per minute)')
+% scatter(avgSpeed(ant_folder_nums),avgFlex(ant_folder_nums))
+% labels = {'M','M','L','L','M','S','S'};
+% z = labelpoints(avgSpeed(ant_folder_nums),avgFlex(ant_folder_nums),labels,'N');
+% title({'Average Approach Speed vs', 'Average Escape Velocity (Ants Only, Interaction Dist <125)'})
+% xlabel('Approach speed  (Pixels per minute)')
+% ylabel('Escape Velocity (Pixels per minute)')
 
 
 % 

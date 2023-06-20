@@ -19,12 +19,11 @@ for i = 1:29
     ori(i,:) = orientation > orientation_divs(i) & orientation <= orientation_divs(i+1);
     total_danger_response_app = sum(flex_interactions & app(i,:)) + sum(flee_interactions & app(i,:)) + sum(both_interactions & app(i,:));
     total_app = sum(app(i,:));
-    flex_percentage_app(i) = sum(app(i,:) & orientation < 0 & (flex_interactions | both_interactions))/total_danger_response_app;
-    flee_percentage_app(i) = sum(app(i,:)  & orientation < 0 & (flee_interactions | both_interactions))/total_danger_response_app;
+    flex_percentage_app(i) = sum(app(i,:) & (flex_interactions | both_interactions))/total_danger_response_app;
+    flee_percentage_app(i) = sum(app(i,:)  &  (flee_interactions | both_interactions))/total_danger_response_app;
     both_percentage_app(i) = sum(app(i,:) & both_interactions)/total_danger_response_app;
     neither_percentage_app(i) = sum(app(i,:) & neither_interactions)/total_app;
-    danger_percentage_app_positive_ori(i) = sum(app(i,:) & orientation > 0 & ~neither_interactions)/total_app;
-    danger_percentage_app_negative_ori(i) = sum(app(i,:) & orientation < 0 & ~neither_interactions)/total_app;
+    danger_percentage_app(i) = sum(app(i,:)  & ~neither_interactions)/total_app;
     flexes_by_app(i) = sum(app(i,:) & flex_interactions);
     flees_by_app(i) = sum(app(i,:) & flee_interactions);
     boths_by_app(i) = sum(app(i,:) & both_interactions);
@@ -59,25 +58,26 @@ all_by_app = [flex_percentage_app; flee_percentage_app; both_percentage_app; nei
 % surf(approach_divs(1:9),orientation_divs(1:9),flee_percentage)
 % colorbar
 set(0,'defaultAxesFontSize',15)
-fig = figure('units','inch','position',[0,0,20,12]);
+fig = figure('units','inch','position',[0,0,20,10]);
 subplot(1,2,1)
-plot(approach_divs(1:29),danger_percentage_app_positive_ori)
-title('Positive Orientation')
+plot(approach_divs(1:29),flex_percentage_app, '-k+','MarkerSize', 8,'MarkerEdgeColor', 'red', 'MarkerFaceColor','red','LineWidth',3)
+title('Flex')
 xlabel('Ant Approach Speed (pixels/minute)')
-ylabel('Percentage Danger Response')
+ylabel('Percentage Flex Response')
 
 subplot(1,2,2)
-plot(approach_divs(1:29), danger_percentage_app_negative_ori)
-title('Negative Orientation')
+plot(approach_divs(1:29), flee_percentage_app, '-k+','MarkerSize', 8,'MarkerEdgeColor', 'blue',"MarkerFaceColor",'blue','LineWidth',3)
+title('Flee')
 xlabel('Ant Approach Speed (pixels/minute)')
-ylabel('Percentage Danger Response')
+ylabel('Percentage Flee Response')
 
-
-titles = "Proportion of Responses that are Danger Responses by Approach Speed, Divided by Orientation (Ants)"
+% 
+titles = "Proportion of Flex and Flee Responses by Ant Approach Speed (Ants)"
 sgtitle(titles,'FontSize',20)
 % 
 % plot(approach_divs(1:29),danger_percentage_app)
-% titles = "Proportion of Responses that are Danger Responses by Approach Speed, Divided by Orientation (Ants)"
+% titles = "Proportion of Responses that are Danger Responses by Approach Speed (Ants)"
 % title(titles)
-
+% ylabel('Percentage Danger Responses')
+% xlabel('Ant Approach Speed (pixels/minute)')
 saveas(gcf,'/Users/jasonwong/Projects/neuroetho/Ant Graphs/'+ titles + '.png')
