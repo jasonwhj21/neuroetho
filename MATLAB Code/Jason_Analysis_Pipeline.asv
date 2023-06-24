@@ -1,3 +1,4 @@
+
 path = '/Users/jasonwong/Projects/Beetle_Learning_MATLAB/Organism_CSVs';
 folders = dir([path,'/','Dal_*']);
 num_folders = size(folders,1);
@@ -16,8 +17,8 @@ other_velocity_after = [];
 other_orientation = [];
 min_flex = [];
 max_length = 0;
-for k = 1:size(_ants_folder_nums,2)
-    organism = folders(other_folder_nums(k)).name;
+for k = 1:size(ants_folder_nums,2)
+    organism = folders(ant_folder_nums(k)).name;
     load([path,'/',organism,'/',organism,'statistics']);
     load([path,'/',organism,'/',organism,'statisticslin']);
     
