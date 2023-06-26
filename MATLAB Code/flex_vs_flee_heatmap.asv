@@ -2,9 +2,9 @@
 %At each combination of approach speed and orientation, how likely is a
 %beetle to flex vs flee?
 
-flex_interactions = ((flex_during < 1.75 | flex_after < 1.75 | min_flex<1.75) & dal_velocity_after <= 20000);
+flex_interactions = ((flex_during < 1.75  | min_flex<1.75) & dal_velocity_after <= 20000);
 flee_interactions = (dal_velocity_after > 20000 & (flex_during >= 1.75 & flex_after >= 1.75 & min_flex >= 1.75));
-both_interactions = ((flex_during < 1.75 | flex_after < 1.75 | min_flex < 1.75) & dal_velocity_after>20000);
+both_interactions = ((flex_during < 1.75  | min_flex < 1.75) & dal_velocity_after>20000);
 neither_interactions = ~(flex_interactions | flee_interactions | both_interactions);
 
 
@@ -62,38 +62,45 @@ all_by_app = [flex_percentage_app; flee_percentage_app; both_percentage_app; nei
 % colorbar
 set(0,'defaultAxesFontSize',15)
 fig = figure('units','inch','position',[0,0,20,10]);
-subplot(1,2,1)
-scatter(approach_divs(1:29),danger_percentage_app_pos, '-k+','MarkerSize', 8,'MarkerEdgeColor', 'red', 'MarkerFaceColor','red','LineWidth',3)
-coeffs = polyfit(approach_divs(1:29), danger_percentage_app,1);
-fit = polyval(coeffs,[approach_divs(1),approach_divs(29)])
-grid on
-hold on
-plot([approach_divs(1),approach_divs(29)], fit, 'LineWidth' ,2,'Color','black')
-title('Positive Orientation')
-xlabel('Ant Approach Speed (pixels/minute)')
-ylabel('Percentage Flex Response')
-
-subplot(1,2,2)
-scatter(approach_divs(1:29), danger_percentage_app_neg, '-k+','MarkerSize', 8,'MarkerEdgeColor', 'blue',"MarkerFaceColor",'blue','LineWidth',3)
-title('Negative Orientation')
-xlabel('Ant Approach Speed (pixels/minute)')
-ylabel('Percentage Flee Response')
-
-
-titles = "Proportion of Flex and Flee Responses by Ant Approach Speed (Ants)"
-sgtitle(titles,'FontSize',20)
-
-
-% bar(approach_divs(1:29),danger_percentage_app)
-% danger_percentage_app(isnan(danger_percentage_app)) = 0;
-% coeffs = polyfit(approach_divs(1:29), danger_percentage_app,1);
+% danger_percentage_app_pos(isnan(danger_percentage_app_pos)) = 0;
+% danger_percentage_app_neg(isnan(danger_percentage_app_neg)) = 0;
+% subplot(1,2,1)
+% scatter(approach_divs(1:29),danger_percentage_app_pos, 50,'MarkerEdgeColor', 'red', 'MarkerFaceColor','red')
+% coeffs = polyfit(approach_divs(1:29), danger_percentage_app_pos,1);
+% fit = polyval(coeffs,[approach_divs(1),approach_divs(29)]);
+% grid on
+% hold on
+% plot([approach_divs(1),approach_divs(29)], fit, 'LineWidth' ,2,'Color','black')
+% title('Positive Orientation')
+% xlabel('Ant Approach Speed (pixels/minute)')
+% ylabel('Percentage Danger Response')
+% 
+% subplot(1,2,2)
+% scatter(approach_divs(1:29), danger_percentage_app_neg, 50,'MarkerEdgeColor', 'blue',"MarkerFaceColor",'blue')
+% coeffs = polyfit(approach_divs(1:29), danger_percentage_app_neg,1);
 % fit = polyval(coeffs,[approach_divs(1),approach_divs(29)])
 % grid on
 % hold on
 % plot([approach_divs(1),approach_divs(29)], fit, 'LineWidth' ,2,'Color','black')
-% hold off
-% titles = "Proportion of Responses that are Danger Responses by Approach Speed (Other)"
-% title(titles,newline,'FontSize',20)
-% ylabel('Percentage Danger Responses')
-% xlabel('Other Approach Speed (pixels/minute)')
+% title('Negative Orientation')
+% xlabel('Ant Approach Speed (pixels/minute)')
+% ylabel('Percentage Danger Response')
+% 
+% 
+% titles = "Proportion of Danger Responses by Ant Approach Speed (dist < 45), Divided by Orientation (Ants)"
+% sgtitle(titles,'FontSize',20)
+
+
+scatter(orientation_divs(1:29),danger_percentage_ori)
+
+coeffs = polyfit(approach_divs(1:29), danger_percentage_app,1);
+fit = polyval(coeffs,[approach_divs(1),approach_divs(29)])
+
+hold on
+plot([approach_divs(1),approach_divs(29)], fit, 'LineWidth' ,2,'Color','black')
+hold off
+titles = "Proportion of Responses that are Danger Responses by Approach Speed (45 < dist < 125) (Ants)"
+title(titles,newline,'FontSize',20)
+ylabel('Percentage Danger Responses')
+xlabel('Ant Approach Speed (pixels/minute)')
 % saveas(gcf,'/Users/jasonwong/Projects/neuroetho/Ant Graphs/'+ titles + '.png')
