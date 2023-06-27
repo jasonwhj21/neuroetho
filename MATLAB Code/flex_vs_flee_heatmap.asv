@@ -17,34 +17,35 @@ labels = ['Flex', 'Flee', 'Both', 'Neither'];
 for i = 1:29
     app(i,:) = approach_speed > approach_divs(i) & approach_speed <= approach_divs(i+1);
     ori(i,:) = orientation > orientation_divs(i) & orientation <= orientation_divs(i+1);
-    total_danger_response_app = sum(flex_interactions & app(i,:)) + sum(flee_interactions & app(i,:)) + sum(both_interactions & app(i,:));
-    total_app = sum(app(i,:));
+    total_danger_response_app(i) = sum(flex_interactions & app(i,:)) + sum(flee_interactions & app(i,:)) + sum(both_interactions & app(i,:));
+    total_app(i) = sum(app(i,:));
     total_pos = sum(app(i,:) & orientation > 0);
     total_neg = sum(app(i,:) & orientation <= 0);
-    flex_percentage_app(i) = sum(app(i,:) & (flex_interactions | both_interactions))/total_danger_response_app;
-    flee_percentage_app(i) = sum(app(i,:)  &  (flee_interactions | both_interactions))/total_danger_response_app;
-    both_percentage_app(i) = sum(app(i,:) & both_interactions)/total_danger_response_app;
-    neither_percentage_app(i) = sum(app(i,:) & neither_interactions)/total_app;
+    flex_percentage_app(i) = sum(app(i,:) & (flex_interactions | both_interactions))/total_danger_response_app(i);
+    flee_percentage_app(i) = sum(app(i,:)  &  (flee_interactions | both_interactions))/total_danger_response_app(i);
+    both_percentage_app(i) = sum(app(i,:) & both_interactions)/total_danger_response_app(i);
+    neither_percentage_app(i) = sum(app(i,:) & neither_interactions)/total_app(i);
+    danger_percentage_app(i) = sum(app(i,:)  & ~neither_interactions)/total_app(i);
     danger_percentage_app_pos(i) = sum(app(i,:)  & ~neither_interactions & orientation > 0)/total_pos;
     danger_percentage_app_neg(i) = sum(app(i,:)  & ~neither_interactions & orientation <= 0)/total_neg;
     flexes_by_app(i) = sum(app(i,:) & flex_interactions);
     flees_by_app(i) = sum(app(i,:) & flee_interactions);
     boths_by_app(i) = sum(app(i,:) & both_interactions);
     neithers_by_app(i) = sum(app(i,:) & neither_interactions);
-    dangers_by_app(i) = sum(app(i,:) & ~neither_interactions);
 
-    total_danger_response_ori = sum(flex_interactions & ori(i,:)) + sum(flee_interactions & ori(i,:)) + sum(both_interactions & ori(i,:));
-    total_ori = sum(ori(i,:));
-    flex_percentage_ori(i) = sum(ori(i,:) & (flex_interactions | both_interactions ))/total_danger_response_ori;
-    flee_percentage_ori(i) = sum(ori(i,:) & (flee_interactions | both_interactions))/total_danger_response_ori;
-    both_percentage_ori(i) = sum(ori(i,:) & both_interactions)/total_danger_response_ori;
-    neither_percentage_ori(i) = sum(ori(i,:) & neither_interactions)/total_ori;
-    danger_percentage_ori(i) = sum(ori(i,:) & ~neither_interactions)/total_ori;
+
+    total_danger_response_ori(i) = sum(flex_interactions & ori(i,:)) + sum(flee_interactions & ori(i,:)) + sum(both_interactions & ori(i,:));
+    total_ori(i) = sum(ori(i,:));
+    flex_percentage_ori(i) = sum(ori(i,:) & (flex_interactions | both_interactions ))/total_danger_response_ori(i);
+    flee_percentage_ori(i) = sum(ori(i,:) & (flee_interactions | both_interactions))/total_danger_response_ori(i);
+    both_percentage_ori(i) = sum(ori(i,:) & both_interactions)/total_danger_response_ori(i);
+    neither_percentage_ori(i) = sum(ori(i,:) & neither_interactions)/total_ori(i);
+    danger_percentage_ori(i) = sum(ori(i,:) & ~neither_interactions)/total_ori(i);
     flexes_by_ori(i) = sum(ori(i,:) & flex_interactions);
     flees_by_ori(i) = sum(ori(i,:) & flee_interactions);
     boths_by_ori(i) = sum(ori(i,:) & both_interactions);
     neithers_by_ori(i) = sum(ori(i,:) & neither_interactions);
-    dangers_by_ori(i) = sum(ori(i,:) & ~neither_interactions);
+    
 end
 all_by_app = [flex_percentage_app; flee_percentage_app; both_percentage_app; neither_percentage_app];
 % for j = 1:19
@@ -61,7 +62,7 @@ all_by_app = [flex_percentage_app; flee_percentage_app; both_percentage_app; nei
 % surf(approach_divs(1:9),orientation_divs(1:9),flee_percentage)
 % colorbar
 set(0,'defaultAxesFontSize',15)
-fig = figure('units','inch','position',[0,0,20,10]);
+fig = figure('units','inch','position',[0,0,15,10]);
 % danger_percentage_app_pos(isnan(danger_percentage_app_pos)) = 0;
 % danger_percentage_app_neg(isnan(danger_percentage_app_neg)) = 0;
 % subplot(1,2,1)
@@ -91,16 +92,45 @@ fig = figure('units','inch','position',[0,0,20,10]);
 % sgtitle(titles,'FontSize',20)
 
 
-scatter(orientation_divs(1:29),danger_percentage_ori)
+scatter(approach_divs(1:29),danger_percentage_app,50,'filled')
 
-coeffs = polyfit(approach_divs(1:29), danger_percentage_app,1);
-fit = polyval(coeffs,[approach_divs(1),approach_divs(29)])
+
+[coeffs,S] = polyfit(approach_divs(1:29), danger_percentage_app,1);
+fit = polyval(coeffs,approach_divs(1:29));
+SStot = sum((danger_percentage_app-mean(danger_percentage_app)).^2);                   
+SSres = sum((danger_percentage_app-fit).^2);                    
+Rsq = 1-SSres/SStot; 
 
 hold on
-plot([approach_divs(1),approach_divs(29)], fit, 'LineWidth' ,2,'Color','black')
+plot(approach_divs(1:29), fit, 'LineWidth' ,2,'Color','black')
+L = legend('',['R^2: ' , num2str(Rsq)], 'Location','northwest', 'FontSize', 15);
+L.AutoUpdate = 'off';
 hold off
-titles = "Proportion of Responses that are Danger Responses by Approach Speed (45 < dist < 125) (Ants)"
+% 
+% [phat, pci] = binofit(total_danger_response_app, total_app,0.1)
+% CI_max = pci(:,2) - flex_percentage_ori';
+% CI_min =  flex_percentage_ori' - pci(:,1);
+
+
+hold on
+errorbar(approach_divs(1:29),danger_percentage_app,confidence_interval,'LineStyle','none')
+hold off
+
+titles = "Proportion of Responses that are Danger Responses by Approach Speed (50 < dist < 125) (Ants)"
 title(titles,newline,'FontSize',20)
-ylabel('Percentage Danger Responses')
-xlabel('Ant Approach Speed (pixels/minute)')
+
+
+ %pretty figure settings
+    offsetAxes(gca);
+    set(gca, ...
+        'LineWidth', 2,...
+        'XColor', 'k',...
+        'YColor', 'k',...
+        'FontName', 'Arial',...
+        'FontSize', 16,...
+        'Box', 'off');
+    xlabel('Flex Percentage', 'FontSize', 14);
+    ylabel('Orientation', 'FontSize', 14);
+    whitebg('white')
+
 % saveas(gcf,'/Users/jasonwong/Projects/neuroetho/Ant Graphs/'+ titles + '.png')
