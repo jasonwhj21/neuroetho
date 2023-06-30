@@ -17,8 +17,8 @@ other_velocity_after = [];
 other_orientation = [];
 min_flex = [];
 max_length = 0;
-for k = 1:size(ant_folder_nums,2)
-    organism = folders(ant_folder_nums(k)).name;
+for k = 1:size(other_folder_nums,2)
+    organism = folders(other_folder_nums(k)).name;
     load([path,'/',organism,'/',organism,'statistics']);
     load([path,'/',organism,'/',organism,'statisticslin']);
     

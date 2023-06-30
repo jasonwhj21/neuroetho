@@ -1,6 +1,10 @@
 %We divide approach speed and orientation into 10 equal subdivisions each. 
 %At each combination of approach speed and orientation, how likely is a
 %beetle to flex vs flee?
+ant = ('Ant_long_long_interactions');
+other = ('Other_long_long_interactions')
+%pretty figure settings
+ 
 
 flex_interactions = ((flex_during < 1.75  | min_flex<1.75) & dal_velocity_after <= 20000);
 flee_interactions = (dal_velocity_after > 20000 & (flex_during >= 1.75 & flex_after >= 1.75 & min_flex >= 1.75));
@@ -19,15 +23,15 @@ for i = 1:29
     ori(i,:) = orientation > orientation_divs(i) & orientation <= orientation_divs(i+1);
     total_danger_response_app(i) = sum(flex_interactions & app(i,:)) + sum(flee_interactions & app(i,:)) + sum(both_interactions & app(i,:));
     total_app(i) = sum(app(i,:));
-    total_pos = sum(app(i,:) & orientation > 0);
-    total_neg = sum(app(i,:) & orientation <= 0);
+    total_pos(i) = sum(app(i,:) & orientation > 0);
+    total_neg(i) = sum(app(i,:) & orientation <= 0);
     flex_percentage_app(i) = sum(app(i,:) & (flex_interactions | both_interactions))/total_danger_response_app(i);
     flee_percentage_app(i) = sum(app(i,:)  &  (flee_interactions | both_interactions))/total_danger_response_app(i);
     both_percentage_app(i) = sum(app(i,:) & both_interactions)/total_danger_response_app(i);
     neither_percentage_app(i) = sum(app(i,:) & neither_interactions)/total_app(i);
     danger_percentage_app(i) = sum(app(i,:)  & ~neither_interactions)/total_app(i);
-    danger_percentage_app_pos(i) = sum(app(i,:)  & ~neither_interactions & orientation > 0)/total_pos;
-    danger_percentage_app_neg(i) = sum(app(i,:)  & ~neither_interactions & orientation <= 0)/total_neg;
+    danger_percentage_app_pos(i) = sum(app(i,:)  & ~neither_interactions & orientation > 0)/total_pos(i);
+    danger_percentage_app_neg(i) = sum(app(i,:)  & ~neither_interactions & orientation <= 0)/total_neg(i);
     flexes_by_app(i) = sum(app(i,:) & flex_interactions);
     flees_by_app(i) = sum(app(i,:) & flee_interactions);
     boths_by_app(i) = sum(app(i,:) & both_interactions);
@@ -61,67 +65,29 @@ all_by_app = [flex_percentage_app; flee_percentage_app; both_percentage_app; nei
 % end
 % surf(approach_divs(1:9),orientation_divs(1:9),flee_percentage)
 % colorbar
-set(0,'defaultAxesFontSize',15)
+
 fig = figure('units','inch','position',[0,0,15,10]);
-% danger_percentage_app_pos(isnan(danger_percentage_app_pos)) = 0;
-% danger_percentage_app_neg(isnan(danger_percentage_app_neg)) = 0;
-% subplot(1,2,1)
-% scatter(approach_divs(1:29),danger_percentage_app_pos, 50,'MarkerEdgeColor', 'red', 'MarkerFaceColor','red')
-% coeffs = polyfit(approach_divs(1:29), danger_percentage_app_pos,1);
-% fit = polyval(coeffs,[approach_divs(1),approach_divs(29)]);
-% grid on
-% hold on
-% plot([approach_divs(1),approach_divs(29)], fit, 'LineWidth' ,2,'Color','black')
-% title('Positive Orientation')
-% xlabel('Ant Approach Speed (pixels/minute)')
-% ylabel('Percentage Danger Response')
-% 
-% subplot(1,2,2)
-% scatter(approach_divs(1:29), danger_percentage_app_neg, 50,'MarkerEdgeColor', 'blue',"MarkerFaceColor",'blue')
-% coeffs = polyfit(approach_divs(1:29), danger_percentage_app_neg,1);
-% fit = polyval(coeffs,[approach_divs(1),approach_divs(29)])
-% grid on
-% hold on
-% plot([approach_divs(1),approach_divs(29)], fit, 'LineWidth' ,2,'Color','black')
-% title('Negative Orientation')
-% xlabel('Ant Approach Speed (pixels/minute)')
-% ylabel('Percentage Danger Response')
-% 
-% 
-% titles = "Proportion of Danger Responses by Ant Approach Speed (dist < 45), Divided by Orientation (Ants)"
-% sgtitle(titles,'FontSize',20)
+danger_percentage_app_pos(isnan(danger_percentage_app_pos)) = 0;
+danger_percentage_app_neg(isnan(danger_percentage_app_neg)) = 0;
 
-
-scatter(approach_divs(1:29),danger_percentage_app,50,'filled')
-
-
-[coeffs,S] = polyfit(approach_divs(1:29), danger_percentage_app,1);
+subplot(1,2,1)
+danger_percentage_app_pos([18,26]) = NaN
+scatter(approach_divs(~isnan(danger_percentage_app_pos)),danger_percentage_app_pos, 60,'MarkerEdgeColor', 'red', 'MarkerFaceColor','red')
+coeffs = polyfit(approach_divs(1:29), danger_percentage_app_pos,1);
 fit = polyval(coeffs,approach_divs(1:29));
-SStot = sum((danger_percentage_app-mean(danger_percentage_app)).^2);                   
-SSres = sum((danger_percentage_app-fit).^2);                    
+SStot = sum((danger_percentage_app_pos-mean(danger_percentage_app_pos)).^2);                   
+SSres = sum((danger_percentage_app_pos-fit).^2);                    
 Rsq = 1-SSres/SStot; 
-
+L = legend(['R^2: ' , num2str(Rsq)], 'Location','northwest', 'FontSize', 15);
+L.AutoUpdate = 'off';
+ylim([0.2,1])
+grid on
 hold on
 plot(approach_divs(1:29), fit, 'LineWidth' ,2,'Color','black')
-L = legend('',['R^2: ' , num2str(Rsq)], 'Location','northwest', 'FontSize', 15);
-L.AutoUpdate = 'off';
-hold off
-% 
-% [phat, pci] = binofit(total_danger_response_app, total_app,0.1)
-% CI_max = pci(:,2) - flex_percentage_ori';
-% CI_min =  flex_percentage_ori' - pci(:,1);
+title('Positive Orientation')
 
 
-hold on
-errorbar(approach_divs(1:29),danger_percentage_app,confidence_interval,'LineStyle','none')
-hold off
-
-titles = "Proportion of Responses that are Danger Responses by Approach Speed (50 < dist < 125) (Ants)"
-title(titles,newline,'FontSize',20)
-
-
- %pretty figure settings
-    offsetAxes(gca);
+   offsetAxes(gca);
     set(gca, ...
         'LineWidth', 2,...
         'XColor', 'k',...
@@ -129,8 +95,72 @@ title(titles,newline,'FontSize',20)
         'FontName', 'Arial',...
         'FontSize', 16,...
         'Box', 'off');
-    xlabel('Flex Percentage', 'FontSize', 14);
-    ylabel('Orientation', 'FontSize', 14);
+    xlabel('Ant Approach Speed (pixels/minute)', 'FontSize', 14);
+    ylabel('Percentage Threat Response', 'FontSize', 14);
     whitebg('white')
+
+subplot(1,2,2)
+scatter(approach_divs(1:29), danger_percentage_app_neg, 60,'MarkerEdgeColor', 'blue',"MarkerFaceColor",'blue')
+coeffs = polyfit(approach_divs(1:29), danger_percentage_app_neg,1);
+fit = polyval(coeffs,approach_divs(1:29));
+SStot = sum((danger_percentage_app_neg-mean(danger_percentage_app_neg)).^2);                   
+SSres = sum((danger_percentage_app_neg-fit).^2);                    
+Rsq = 1-SSres/SStot; 
+L = legend(['R^2: ' , num2str(Rsq)], 'Location','northwest', 'FontSize', 15);
+L.AutoUpdate = 'off';
+ylim([0.2,1])
+
+grid on
+hold on
+plot(approach_divs(1:29), fit, 'LineWidth' ,2,'Color','black')
+title('Negative Orientation')
+xlabel('Other Approach Speed (pixels/minute)')
+ylabel('Percentage Danger Response')
+
+   offsetAxes(gca);
+    set(gca, ...
+        'LineWidth', 2,...
+        'XColor', 'k',...
+        'YColor', 'k',...
+        'FontName', 'Arial',...
+        'FontSize', 16,...
+        'Box', 'off');
+    xlabel('Other Approach Speed (pixels/minute)', 'FontSize', 14);
+    ylabel('Percentage Threat Response', 'FontSize', 14);
+    whitebg('white')
+
+titles = "Proportion of Danger Responses by Ant Approach Speed (dist < 45) For Each Orientation (Ants)"
+sgtitle(titles,'FontSize',20)
+
+% 
+% scatter(approach_divs(1:29),danger_percentage_app,60,'filled','k')
+% danger_percentage_app(isnan(danger_percentage_app)) = 0;
+% 
+% [coeffs,S] = polyfit(approach_divs(1:29), danger_percentage_app,1);
+% fit = polyval(coeffs,approach_divs(1:29));
+% SStot = sum((danger_percentage_app-mean(danger_percentage_app)).^2);                   
+% SSres = sum((danger_percentage_app-fit).^2);                    
+% Rsq = 1-SSres/SStot; 
+% 
+% hold on
+% plot(approach_divs(1:29), fit, 'LineWidth' ,2,'Color','black')
+% L = legend('',['R^2: ' , num2str(Rsq),newline,], 'Location','northwest', 'FontSize', 15);
+% L.AutoUpdate = 'off';
+% hold off
+% 
+% [phat, pci] = binofit(total_danger_response_app, total_app,0.05)
+% CI_max = pci(:,2) - danger_percentage_app';
+% CI_min =  danger_percentage_app' - pci(:,1);
+% 
+% 
+% hold on
+% errorbar(approach_divs(1:29),danger_percentage_app,CI_min,CI_max,'LineStyle','none','Color','red')
+% hold off
+% 
+% titles = "Proportion of Responses that are Danger Responses by Approach Speed (dist < 125) (Ants)"
+% title(titles,newline,'FontSize',20)
+% % 
+
+ 
 
 % saveas(gcf,'/Users/jasonwong/Projects/neuroetho/Ant Graphs/'+ titles + '.png')
