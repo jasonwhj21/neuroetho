@@ -96,30 +96,50 @@ set(0,'defaultAxesFontSize',15)
 %%
 
 names = categorical({'Acromyrmex','Liometopum','Liometopum (orco)','Formica','Large Liometompum', 'Small Liometopum','Solenopsis', ...
-    'Bean Beetle', 'DMel', 'Fungus Gnat', 'Isopod', 'Mealworm','Pirate Bug'});
+    'Bean Beetle', 'DMel', 'Fungus Gnat', 'Isopod', 'MealyBugDestroyer','Pirate Bug'});
 names = reordercats(names,{'Acromyrmex','Liometopum','Liometopum (orco)','Formica','Large Liometompum', 'Small Liometopum','Solenopsis', ...
-    'Bean Beetle', 'DMel', 'Fungus Gnat', 'Isopod', 'Mealworm','Pirate Bug'});
+    'Bean Beetle', 'DMel', 'Fungus Gnat', 'Isopod', 'MealyBugDestroyer','Pirate Bug'});
 for j = 1:size(ant_folder_nums,2)
     org = ant_folder_nums(j);
-    facing = (individual_stats{org}{8}>0);
-    how_long_facing = mean(individual_stats{org}{9}(facing));
-    how_long_not_facing = mean(individual_stats{org}{9}(~facing));
+    facing = (individual_stats{org}{8}>=0);
+    not_facing = (individual_stats{org}{8}<0);
+    how_long_facing = mean(individual_stats{org}{9}(facing),"omitnan");
+    how_long_not_facing = mean(individual_stats{org}{9}(not_facing),"omitnan");
     all(j,:) = [how_long_facing, how_long_not_facing];
+    SEM= [std(individual_stats{org}{9}(facing),"omitnan")/sqrt(size(individual_stats{org}{9}(facing),2)),
+    std(individual_stats{org}{9}(not_facing),"omitnan")/sqrt(size(individual_stats{org}{9}(not_facing),2))];
+    SEM_all(j,:) = SEM;
 end
 
 for i = 1:size(other_folder_nums,2)
     org = other_folder_nums(i);
-    facing = (individual_stats{org}{8}>0);
-    how_long_facing = mean(individual_stats{org}{9}(facing));
-    how_long_not_facing = mean(individual_stats{org}{9}(~facing));
+    facing = (individual_stats{org}{8}>=0);
+    not_facing = (individual_stats{org}{8}<0);
+    how_long_facing = mean(individual_stats{org}{9}(facing),"omitnan");
+    how_long_not_facing = mean(individual_stats{org}{9}(not_facing),"omitnan");
     all(7+i,:) = [how_long_facing, how_long_not_facing];
+    SEM= [std(individual_stats{org}{9}(facing),"omitnan")/sqrt(size(individual_stats{org}{9}(facing),2)),
+    std(individual_stats{org}{9}(not_facing),"omitnan")/sqrt(size(individual_stats{org}{9}(not_facing),2))];
+    SEM_all(7+i,:) = SEM;
 end
 
-bar(names,all)
-legend('Orientation > 0 (facing)', 'Orientation < 0 (non-Facing)')
+b = bar(names,all)
+L = legend('Orientation > 0 (facing)', 'Orientation < 0 (non-Facing)')
+L.AutoUpdate = 'off';
 title('Average Interaction Length at Distance <125 For Each Orientations')
 ylabel('Interaction Length')
 
+
+[ngroups,nbars] = size(all);
+% Get the x coordinate of the bars
+x = nan(nbars, ngroups);
+for i = 1:nbars
+    x(i,:) = b(i).XEndPoints;
+end
+hold on
+% Plot the errorbars
+errorbar(x',all,SEM_all,'k','linestyle','none');
+hold off
 
     set(gca, ...
         'LineWidth', 2,...
@@ -128,8 +148,8 @@ ylabel('Interaction Length')
         'FontName', 'Arial',...
         'FontSize', 16,...
         'Box', 'off');
-    xlabel('Ant Approach Speed (pixels/minute)', 'FontSize', 14);
-    ylabel('Percentage Threat Response', 'FontSize', 14);
+    
+    ylabel('Average Interaction Length', 'FontSize', 14);
     whitebg('white')
 
 % subplot(4,7,28)
