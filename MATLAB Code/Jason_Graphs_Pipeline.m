@@ -1,13 +1,13 @@
-flex1 = flex_during(approach_speed<10000 & orientation >20);
-flex2 = flex_during(approach_speed>10000 & approach_speed<20000 & orientation >20);
-flex3 = flex_during(approach_speed>20000 & approach_speed<30000 & orientation >20);
-flex4 = flex_during(approach_speed>30000 & orientation >20);
-dist = vertcat(distances{:,1});
-flexion = vertcat(flex{:,1});
-
-max_flex = max(flex_during)
-
-set(0,'defaultAxesFontSize',15)
+% flex1 = flex_during(approach_speed<10000 & orientation >20);
+% flex2 = flex_during(approach_speed>10000 & approach_speed<20000 & orientation >20);
+% flex3 = flex_during(approach_speed>20000 & approach_speed<30000 & orientation >20);
+% flex4 = flex_during(approach_speed>30000 & orientation >20);
+% dist = vertcat(distances{:,1});
+% flexion = vertcat(flex{:,1});
+% 
+% max_flex = max(flex_during)
+% 
+% set(0,'defaultAxesFontSize',15)
 
 
 %%
@@ -94,63 +94,63 @@ set(0,'defaultAxesFontSize',15)
 
 
 %%
-
-names = categorical({'Acromyrmex','Liometopum','Liometopum (orco)','Formica','Large Liometompum', 'Small Liometopum','Solenopsis', ...
-    'Bean Beetle', 'DMel', 'Fungus Gnat', 'Isopod', 'MealyBugDestroyer','Pirate Bug'});
-names = reordercats(names,{'Acromyrmex','Liometopum','Liometopum (orco)','Formica','Large Liometompum', 'Small Liometopum','Solenopsis', ...
-    'Bean Beetle', 'DMel', 'Fungus Gnat', 'Isopod', 'MealyBugDestroyer','Pirate Bug'});
-for j = 1:size(ant_folder_nums,2)
-    org = ant_folder_nums(j);
-    facing = (individual_stats{org}{8}>=0);
-    not_facing = (individual_stats{org}{8}<0);
-    how_long_facing = mean(individual_stats{org}{9}(facing),"omitnan");
-    how_long_not_facing = mean(individual_stats{org}{9}(not_facing),"omitnan");
-    all(j,:) = [how_long_facing, how_long_not_facing];
-    SEM= [std(individual_stats{org}{9}(facing),"omitnan")/sqrt(size(individual_stats{org}{9}(facing),2)),
-    std(individual_stats{org}{9}(not_facing),"omitnan")/sqrt(size(individual_stats{org}{9}(not_facing),2))];
-    SEM_all(j,:) = SEM;
-end
-
-for i = 1:size(other_folder_nums,2)
-    org = other_folder_nums(i);
-    facing = (individual_stats{org}{8}>=0);
-    not_facing = (individual_stats{org}{8}<0);
-    how_long_facing = mean(individual_stats{org}{9}(facing),"omitnan");
-    how_long_not_facing = mean(individual_stats{org}{9}(not_facing),"omitnan");
-    all(7+i,:) = [how_long_facing, how_long_not_facing];
-    SEM= [std(individual_stats{org}{9}(facing),"omitnan")/sqrt(size(individual_stats{org}{9}(facing),2)),
-    std(individual_stats{org}{9}(not_facing),"omitnan")/sqrt(size(individual_stats{org}{9}(not_facing),2))];
-    SEM_all(7+i,:) = SEM;
-end
-
-b = bar(names,all)
-L = legend('Orientation > 0 (facing)', 'Orientation < 0 (non-Facing)')
-L.AutoUpdate = 'off';
-title('Average Interaction Length at Distance <125 For Each Orientations')
-ylabel('Interaction Length')
-
-
-[ngroups,nbars] = size(all);
-% Get the x coordinate of the bars
-x = nan(nbars, ngroups);
-for i = 1:nbars
-    x(i,:) = b(i).XEndPoints;
-end
-hold on
-% Plot the errorbars
-errorbar(x',all,SEM_all,'k','linestyle','none');
-hold off
-
-    set(gca, ...
-        'LineWidth', 2,...
-        'XColor', 'k',...
-        'YColor', 'k',...
-        'FontName', 'Arial',...
-        'FontSize', 16,...
-        'Box', 'off');
-    
-    ylabel('Average Interaction Length', 'FontSize', 14);
-    whitebg('white')
+% 
+% names = categorical({'Acromyrmex','Liometopum','Liometopum (orco)','Formica','Large Liometompum', 'Small Liometopum','Solenopsis', ...
+%     'Bean Beetle', 'DMel', 'Fungus Gnat', 'Isopod', 'MealyBugDestroyer','Pirate Bug'});
+% names = reordercats(names,{'Acromyrmex','Liometopum','Liometopum (orco)','Formica','Large Liometompum', 'Small Liometopum','Solenopsis', ...
+%     'Bean Beetle', 'DMel', 'Fungus Gnat', 'Isopod', 'MealyBugDestroyer','Pirate Bug'});
+% for j = 1:size(ant_folder_nums,2)
+%     org = ant_folder_nums(j);
+%     facing = (individual_stats{org}{8}>=0);
+%     not_facing = (individual_stats{org}{8}<0);
+%     how_long_facing = mean(individual_stats{org}{9}(facing),"omitnan");
+%     how_long_not_facing = mean(individual_stats{org}{9}(not_facing),"omitnan");
+%     all(j,:) = [how_long_facing, how_long_not_facing];
+%     SEM= [std(individual_stats{org}{9}(facing),"omitnan")/sqrt(size(individual_stats{org}{9}(facing),2)),
+%     std(individual_stats{org}{9}(not_facing),"omitnan")/sqrt(size(individual_stats{org}{9}(not_facing),2))];
+%     SEM_all(j,:) = SEM;
+% end
+% 
+% for i = 1:size(other_folder_nums,2)
+%     org = other_folder_nums(i);
+%     facing = (individual_stats{org}{8}>=0);
+%     not_facing = (individual_stats{org}{8}<0);
+%     how_long_facing = mean(individual_stats{org}{9}(facing),"omitnan");
+%     how_long_not_facing = mean(individual_stats{org}{9}(not_facing),"omitnan");
+%     all(7+i,:) = [how_long_facing, how_long_not_facing];
+%     SEM= [std(individual_stats{org}{9}(facing),"omitnan")/sqrt(size(individual_stats{org}{9}(facing),2)),
+%     std(individual_stats{org}{9}(not_facing),"omitnan")/sqrt(size(individual_stats{org}{9}(not_facing),2))];
+%     SEM_all(7+i,:) = SEM;
+% end
+% 
+% b = bar(names,all)
+% L = legend('Orientation > 0 (facing)', 'Orientation < 0 (non-Facing)')
+% L.AutoUpdate = 'off';
+% title('Average Interaction Length at Distance <125 For Each Orientations')
+% ylabel('Interaction Length')
+% 
+% 
+% [ngroups,nbars] = size(all);
+% % Get the x coordinate of the bars
+% x = nan(nbars, ngroups);
+% for i = 1:nbars
+%     x(i,:) = b(i).XEndPoints;
+% end
+% hold on
+% % Plot the errorbars
+% errorbar(x',all,SEM_all,'k','linestyle','none');
+% hold off
+% 
+%     set(gca, ...
+%         'LineWidth', 2,...
+%         'XColor', 'k',...
+%         'YColor', 'k',...
+%         'FontName', 'Arial',...
+%         'FontSize', 16,...
+%         'Box', 'off');
+%     
+%     ylabel('Average Interaction Length', 'FontSize', 14);
+%     whitebg('white')
 
 % subplot(4,7,28)
 % for org = 1:13
@@ -164,3 +164,96 @@ hold off
 %     hold on
 % end
 %%
+% 
+% fig = figure('units','inch','position',[0,0,12,12]);
+% 
+% ants_numbers = [3015,368,1031,3662];
+% others_numbers = [494,48,128,1796];
+% b = bar([ants_numbers;others_numbers],'stacked','LineWidth',1.5)
+% 
+% xtips1 = b(4).XEndPoints;
+% ytips1 = b(4).YEndPoints;
+% ytips2 = b(3).YEndPoints;
+% labels1 = string([8076,2466]);
+% text(xtips1,ytips1,labels1,'HorizontalAlignment','center',...
+%     'VerticalAlignment','bottom','FontSize',15)
+% legends = legend({'Flex','Flee','Flex - Flee Combo','Neither'});
+% legends.AutoUpdate = 'off'
+% legends.PlotChildren = legends.PlotChildren([4,3,2,1]);
+% 
+% xt = get(gca, 'XTick');
+% set(gca, 'XTick', xt, 'XTickLabel', {'Ant','Other'})
+% 
+%     set(gca, ...
+%         'LineWidth', 2,...
+%         'XColor', 'k',...
+%         'YColor', 'k',...
+%         'FontName', 'Arial',...
+%         'FontSize', 16,...
+%         'Box', 'off');
+% 
+% titles = "Number of Bouts by Type For Ants and Others";
+% title(titles)
+% 
+% b(1).FaceColor = [0,63,92]/255
+% b(2).FaceColor = [122,81,149]/255
+% b(3).FaceColor = [239,86,117]/255
+% b(4).FaceColor = [255,166,0]/255
+% mycolors = [233,149,149; 157,149,233; 127,216,139; 127,216,216]/255;
+% % colormap(mycolors);
+% 
+% saveas(gcf,'/Users/jasonwong/Projects/neuroetho/Ant Graphs/'+ titles + '.png')
+
+%%
+
+% fig = figure('units','inch','position',[0,0,12,12]);
+% 
+% flex_interactions = ((flex_during < 1.75  | min_flex<1.75) & dal_velocity_after <= 20000);
+% flee_interactions = (dal_velocity_after > 20000 & (flex_during >= 1.75 & flex_after >= 1.75 & min_flex >= 1.75));
+% both_interactions = ((flex_during < 1.75  | min_flex < 1.75) & dal_velocity_after>20000);
+% neither_interactions = ~(flex_interactions | flee_interactions | both_interactions);
+% 
+% neither_app = mean(approach_speed(neither_interactions));
+% flex_app =mean(approach_speed(flex_interactions));
+% flee_app =mean(approach_speed(flee_interactions));
+% both_app =mean(approach_speed(both_interactions));
+% app_by_type = [flex_app,flee_app,both_app,neither_app];
+% types = categorical({'Flex','Flee','Flex - Flee Combo', 'Neither'});
+% types = reordercats(types,{'Flex','Flee','Flex - Flee Combo', 'Neither'});
+% 
+% SEM_app_by_type = [std(approach_speed(flex_interactions))/sqrt(size(approach_speed(flex_interactions),2)), ...
+%     std(approach_speed(flex_interactions))/sqrt(size(approach_speed(flex_interactions),2)), ...
+%     std(approach_speed(flex_interactions))/sqrt(size(approach_speed(flex_interactions),2)), ...
+%     std(approach_speed(flex_interactions))/sqrt(size(approach_speed(flex_interactions),2))]
+% 
+% b = bar(types,app_by_type,'LineWidth',1.5)
+% 
+% hold on
+% errorbar(types,app_by_type,SEM_app_by_type,'k','LineStyle','none','LineWidth',1.5)
+% 
+%     set(gca, ...
+%         'LineWidth', 2,...
+%         'XColor', 'k',...
+%         'YColor', 'k',...
+%         'FontName', 'Arial',...
+%         'FontSize', 16,...
+%         'Box', 'off');
+% titles = "Average Approach Speed by Type of Bout (Ants)"
+% title(titles)
+% 
+% ylabel('Approach Speed (pixels/minute)')
+% b.FaceColor = [0,63,92]/255
+% saveas(gcf,'/Users/jasonwong/Projects/neuroetho/Ant Graphs/'+ titles + '.png')
+%%
+histogram(all_flex.angles)
+set(gca, ...
+        'LineWidth', 2,...
+        'XColor', 'k',...
+        'YColor', 'k',...
+        'FontName', 'Arial',...
+        'FontSize', 16,...
+        'Box', 'off');
+xlabel('Flex Angle (rad)', 'FontSize', 14);
+titles = "Distribution of Flex Angles Across All Frames";
+title(titles)
+% saveas(gcf,'/Users/jasonwong/Projects/neuroetho/Ant Graphs/'+ titles + '.png')

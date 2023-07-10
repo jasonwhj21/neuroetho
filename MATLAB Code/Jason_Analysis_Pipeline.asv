@@ -19,8 +19,8 @@ min_flex = [];
 approach_ang = [];
 locations = {};
 max_length = 0;
-for k = 1:size(all_folder_nums,2)
-    organism = folders(all_folder_nums(k)).name;
+for k = 1:size(ant_folder_nums,2)
+    organism = folders(ant_folder_nums(k)).name;
     load([path,'/',organism,'/',organism,'statistics']);
     load([path,'/',organism,'/',organism,'statisticslin']);
     load([path,'/',organism,'/',organism,'app_angle']);
@@ -30,11 +30,13 @@ for k = 1:size(all_folder_nums,2)
         all_dist = vertcat(distanceslin{:});
         all_vel = vertcat(velocitylin{1:2:end});
         all_interaction_velocities = [];
+    
         
      else
         
         all_dist = vertcat(all_dist,distanceslin{:});
         all_vel = vertcat(all_vel, velocitylin{1:2:end});
+    
      end
     approach_speed_temp = [];
     flex_during_temp =[];
@@ -50,17 +52,16 @@ for k = 1:size(all_folder_nums,2)
     approach_ang_temp = [];
     locations_temp = {};
     for i = 1:size(interactions,1)
-           long_interactions = interactionslin{i}((interactionslin{i}.Var2 - interactionslin{i}.Var1)> 0,:);
-           long_long_interactions = long_dist_interactionslin{i}((long_dist_interactionslin{i}.Var2 - long_dist_interactionslin{i}.Var1)>0,:);
-           long_before_interactions = before_interactionslin{i}((before_interactionslin{i}.Var2 - before_interactionslin{i}.Var1)>0,:);
+        long_interactions = interactionslin{i}((interactionslin{i}.Var2 - interactionslin{i}.Var1)> 0,:);
+        long_long_interactions = long_dist_interactionslin{i}((long_dist_interactionslin{i}.Var2 - long_dist_interactionslin{i}.Var1)>0,:);
+        long_before_interactions = before_interactionslin{i}((before_interactionslin{i}.Var2 - before_interactionslin{i}.Var1)>0,:);
 
-           locations_temp = {};
+        locations_temp_temp = {};
         for j = 1:size(long_long_interactions)
             starts = long_long_interactions.Var1(j,1);
             endings = long_long_interactions.Var2(j,1);
             all_interaction_velocities = vertcat(all_interaction_velocities, velocitylin{2*i-1}(starts:endings,:));
             all_flex = vertcat(all_flex, flex{i}(starts:endings,:));
-            locations_temp_temp = {};
             length_temp(end+1) = endings-starts;
             if (endings-starts) > max_length
                 max_length = endings - starts;
@@ -80,9 +81,23 @@ for k = 1:size(all_folder_nums,2)
             other_orientations = distances{i}.midDist - distances{i}.midHead;
             other_orientation_temp(end+1) = mean(other_orientations(max(starts-20,1):starts,1),'omitnan');
         end
-        
+        locations_temp{end+1} = locations_temp_temp;
     end
-    individual_stats{k,1} = {organism, approach_speed_temp,flex_during_temp,flex_after_temp,min_flex_temp,dal_velocity_after_temp,curve_temp,orientation_temp,length_temp, dal_approach_speed_temp,other_velocity_after_temp,other_orientation_temp,approach_ang_temp}; 
+    individual_stats{k,1} = {organism, 
+        approach_speed_temp,
+        flex_during_temp,
+        flex_after_temp,
+        min_flex_temp,
+        dal_velocity_after_temp,
+        curve_temp,
+        orientation_temp,
+        length_temp,
+        dal_approach_speed_temp,
+        other_velocity_after_temp,
+        other_orientation_temp,
+        approach_ang_temp,
+        locations_temp}; 
+    locations{end+1} = locations_temp;
     approach_speed = [approach_speed,approach_speed_temp];
     flex_during =[flex_during,flex_during_temp];
     flex_after = [flex_after,flex_after_temp];

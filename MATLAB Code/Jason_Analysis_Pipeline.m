@@ -19,23 +19,13 @@ min_flex = [];
 approach_ang = [];
 locations = {};
 max_length = 0;
-for k = 1:size(all_folder_nums,2)
-    organism = folders(all_folder_nums(k)).name;
+for k = 1:size(ant_folder_nums,2)
+    organism = folders(ant_folder_nums(k)).name;
     load([path,'/',organism,'/',organism,'statistics']);
     load([path,'/',organism,'/',organism,'statisticslin']);
     load([path,'/',organism,'/',organism,'app_angle']);
     
-     if k ==1
-        all_flex = [];
-        all_dist = vertcat(distanceslin{:});
-        all_vel = vertcat(velocitylin{1:2:end});
-        all_interaction_velocities = [];
-        
-     else
-        
-        all_dist = vertcat(all_dist,distanceslin{:});
-        all_vel = vertcat(all_vel, velocitylin{1:2:end});
-     end
+   
     approach_speed_temp = [];
     flex_during_temp =[];
     flex_after_temp = [];

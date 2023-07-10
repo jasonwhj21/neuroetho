@@ -72,48 +72,19 @@ danger_percentage_app_neg(isnan(danger_percentage_app_neg)) = 0;
 
 subplot(1,2,1)
 % danger_percentage_app_pos([18,26]) = NaN
-scatter(approach_divs(~isnan(danger_percentage_app_pos)),danger_percentage_app_pos(~isnan(danger_percentage_app_pos)), 60,'MarkerEdgeColor', 'red', 'MarkerFaceColor','red')
-coeffs = polyfit(approach_divs((~isnan(danger_percentage_app_pos))), danger_percentage_app_pos(~isnan(danger_percentage_app_pos)),1);
-fit = polyval(coeffs,approach_divs(~isnan(danger_percentage_app_pos)));
-SStot = sum((danger_percentage_app_pos(~isnan(danger_percentage_app_pos))-mean(danger_percentage_app_pos(~isnan(danger_percentage_app_pos)))).^2);                   
-SSres = sum((danger_percentage_app_pos(~isnan(danger_percentage_app_pos))-fit).^2);                    
-Rsq = 1-SSres/SStot; 
-L = legend(['R^2: ' , num2str(Rsq)], 'Location','northwest', 'FontSize', 15);
-L.AutoUpdate = 'off';
-ylim([0.2,1])
-grid on
-hold on
-plot(approach_divs(~isnan(danger_percentage_app_pos)), fit, 'LineWidth' ,2,'Color','black')
-title('Positive Orientation')
-
-
-   offsetAxes(gca);
-    set(gca, ...
-        'LineWidth', 2,...
-        'XColor', 'k',...
-        'YColor', 'k',...
-        'FontName', 'Arial',...
-        'FontSize', 16,...
-        'Box', 'off');
-    xlabel('Ant Approach Speed (pixels/minute)', 'FontSize', 14);
-    ylabel('Percentage Threat Response', 'FontSize', 14);
-    whitebg('white')
-
-subplot(1,2,2)
-scatter(approach_divs(1:29), danger_percentage_app_neg, 60,'MarkerEdgeColor', 'blue',"MarkerFaceColor",'blue')
-coeffs = polyfit(approach_divs(1:29), danger_percentage_app_neg,1);
+scatter(approach_divs(1:29),flex_percentage_app, 60,'MarkerEdgeColor', 'red', 'MarkerFaceColor','red')
+coeffs = polyfit(approach_divs(1:29),flex_percentage_app,1);
 fit = polyval(coeffs,approach_divs(1:29));
-SStot = sum((danger_percentage_app_neg-mean(danger_percentage_app_neg)).^2);                   
-SSres = sum((danger_percentage_app_neg-fit).^2);                    
+SStot = sum((flex_percentage_app)-mean(flex_percentage_app).^2);                   
+SSres = sum((flex_percentage_app-fit).^2);                    
 Rsq = 1-SSres/SStot; 
 L = legend(['R^2: ' , num2str(Rsq)], 'Location','northwest', 'FontSize', 15);
 L.AutoUpdate = 'off';
 ylim([0.2,1])
-
 grid on
 hold on
 plot(approach_divs(1:29), fit, 'LineWidth' ,2,'Color','black')
-title('Negative Orientation')
+title('Flex Interactions')
 
 
    offsetAxes(gca);
@@ -125,10 +96,38 @@ title('Negative Orientation')
         'FontSize', 16,...
         'Box', 'off');
     xlabel('Ant Approach Speed (pixels/minute)', 'FontSize', 14);
-    ylabel('Percentage Threat Response', 'FontSize', 14);
+    ylabel('Proportion Flex Response', 'FontSize', 14);
     whitebg('white')
 
-titles = "Proportion of Danger Responses by Ant Approach Speed (dist < 125) For Each Orientation (Ants)"
+subplot(1,2,2)
+scatter(approach_divs(1:29),flee_percentage_app, 60,'MarkerEdgeColor', 'blue', 'MarkerFaceColor','blue')
+coeffs = polyfit(approach_divs(1:29),flee_percentage_app,1);
+fit = polyval(coeffs,approach_divs(1:29));
+SStot = sum((flee_percentage_app)-mean(flee_percentage_app).^2);                   
+SSres = sum((flee_percentage_app-fit).^2);                    
+Rsq = 1-SSres/SStot; 
+L = legend(['R^2: ' , num2str(Rsq)], 'Location','northwest', 'FontSize', 15);
+L.AutoUpdate = 'off';
+ylim([0.2,1])
+grid on
+hold on
+plot(approach_divs(1:29), fit, 'LineWidth' ,2,'Color','black')
+title('Flee Interactions')
+
+
+   offsetAxes(gca);
+    set(gca, ...
+        'LineWidth', 2,...
+        'XColor', 'k',...
+        'YColor', 'k',...
+        'FontName', 'Arial',...
+        'FontSize', 16,...
+        'Box', 'off');
+    xlabel('Ant Approach Speed (pixels/minute)', 'FontSize', 14);
+    ylabel('Proportion Flex Response', 'FontSize', 14);
+    whitebg('white')
+
+titles = "Proportion of Flex and Flee Interactions by Approach Speed (dist < 125) (Ants) "
 sgtitle(titles,'FontSize',20)
 
 % 
@@ -162,4 +161,4 @@ sgtitle(titles,'FontSize',20)
 
  
 
-% saveas(gcf,'/Users/jasonwong/Projects/neuroetho/Ant Graphs/'+ titles + '.png')
+saveas(gcf,'/Users/jasonwong/Projects/neuroetho/Ant Graphs/'+ titles + '.png')
