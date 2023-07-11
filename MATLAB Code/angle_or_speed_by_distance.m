@@ -1,4 +1,4 @@
-% 
+
 % path = '/Users/jasonwong/Projects/Beetle_Learning_MATLAB/Organism_CSVs';
 % folders = dir([path,'/','Dal_*']);
 % num_folders = size(folders,1);
@@ -9,7 +9,7 @@
 %     organism = folders(ant_folder_nums(k)).name;
 %     load([path,'/',organism,'/',organism,'statistics']);
 %     load([path,'/',organism,'/',organism,'statisticslin']);
-%     load([path,'/',organism,'/',organism,'app_angle']);
+% %     load([path,'/',organism,'/',organism,'app_angle']);
 %     
 %      if k ==1
 %         all_flex = vertcat(flex{:});
@@ -29,9 +29,21 @@
 distances_divs = [0:40:400]
 flex_by_dist = zeros(1,9);
 vel_by_dist = zeros(1,9);
+SEM_flex = zeros(1,9);
+SEM_vel = zeros(1,9);
+
+
 for i = 1:9
     dist(i,:) = all_dist.midDist < distances_divs(i+1) & all_dist.midDist > distances_divs(i);
     flex_by_dist(i) = mean(all_flex.angles(dist(i,:)), "omitnan");
     vel_by_dist(i) = mean(all_vel.dalotia_velocities(dist(i,:)),"omitnan");
+    
+    SEM_flex(i) = std(all_flex.angles(dist(i,:)),'omitnan')/sqrt(sum(~isnan(all_flex.angles(dist(i,:)))));
+    SEM_vel(i) = std(all_vel.dalotia_velocities(dist(i,:)))/sqrt(size(all_vel.dalotia_velocities(dist(i,:)),1));
+    
 end
-plot(distances_divs(1:9),vel_by_dist)
+count_by_dist = sum(dist,2);
+errorbar(distances_divs(1:9),flex_by_dist,SEM_flex)
+xlabel('Distance Between Insects (pixels)')
+ylabel('Angle of Flexion (rad)')
+title('Average Beetle Angle of Flexion By Interspecies Distance (Ants)')

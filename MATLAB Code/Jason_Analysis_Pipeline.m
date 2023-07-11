@@ -23,7 +23,7 @@ for k = 1:size(ant_folder_nums,2)
     organism = folders(ant_folder_nums(k)).name;
     load([path,'/',organism,'/',organism,'statistics']);
     load([path,'/',organism,'/',organism,'statisticslin']);
-    load([path,'/',organism,'/',organism,'app_angle']);
+     load([path,'/',organism,'/',organism,'app_angle']);
     
    
     approach_speed_temp = [];
@@ -48,8 +48,6 @@ for k = 1:size(ant_folder_nums,2)
         for j = 1:size(long_long_interactions)
             starts = long_long_interactions.Var1(j,1);
             endings = long_long_interactions.Var2(j,1);
-            all_interaction_velocities = vertcat(all_interaction_velocities, velocitylin{2*i-1}(starts:endings,:));
-            all_flex = vertcat(all_flex, flex{i}(starts:endings,:));
             length_temp(end+1) = endings-starts;
             if (endings-starts) > max_length
                 max_length = endings - starts;
@@ -62,14 +60,14 @@ for k = 1:size(ant_folder_nums,2)
             curve_temp(end+1)= mean(curvature{i}.other_curvatures(max(starts-90,1):starts,1),'omitnan');
             orientations = distances{i}.midDist - distances{i}.headDist;
             orientation_temp(end+1) = mean(orientations(max(starts-60,1):starts,1),'omitnan');
-            approach_ang_temp(end+1) = mean([mean(app_angle{i}.app_angles_mid(max(starts-60,1):starts,1),'omitnan') + mean(app_angle{i}.app_angles_head(max(starts-60,1):starts,1),'omitnan')],'omitnan');
+             approach_ang_temp(end+1) = mean([mean(app_angle{i}.app_angles_mid(max(starts-60,1):starts,1),'omitnan') + mean(app_angle{i}.app_angles_head(max(starts-60,1):starts,1),'omitnan')],'omitnan');
             locations_temp_temp{end+1} = app_angle{i}(max(starts-60,1):starts,:);
             dal_approach_speed_temp(end+1) = mean(velocitylin{2*i-1}.dalotia_velocities(max(starts-10,1):starts,1),'omitnan');
             other_velocity_after_temp(end+1) = mean(velocitylin{2*i-1}.other_velocities(endings:min(endings+10,size(velocitylin{2*i-1})),1),"omitnan");
             other_orientations = distances{i}.midDist - distances{i}.midHead;
             other_orientation_temp(end+1) = mean(other_orientations(max(starts-20,1):starts,1),'omitnan');
         end
-        locations_temp{end+1} = locations_temp_temp;
+         locations_temp{end+1} = locations_temp_temp;
     end
     individual_stats{k,1} = {organism, 
         approach_speed_temp,
@@ -85,7 +83,7 @@ for k = 1:size(ant_folder_nums,2)
         other_orientation_temp,
         approach_ang_temp,
         locations_temp}; 
-    locations{end+1} = locations_temp;
+
     approach_speed = [approach_speed,approach_speed_temp];
     flex_during =[flex_during,flex_during_temp];
     flex_after = [flex_after,flex_after_temp];
@@ -94,11 +92,12 @@ for k = 1:size(ant_folder_nums,2)
     curve = [curve,curve_temp];
     orientation = [orientation,orientation_temp];
     orientation(abs(orientation) > 40 ) = NaN;
-    approach_ang = [approach_ang,approach_ang_temp];
     length = [length,length_temp];
     dal_approach_speed = [dal_approach_speed,dal_approach_speed_temp];
     other_velocity_after = [other_velocity_after, other_velocity_after_temp];
     other_orientation = [other_orientation, other_orientation_temp];
+    %     approach_ang = [approach_ang,approach_ang_temp];
+    %     locations{end+1} = locations_temp;
     %1. Organism
     %2. Approach_speed (-10 frames)
     %3. Flex_during (-60 frames)
