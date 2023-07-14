@@ -75,9 +75,9 @@ subplot(1,2,1)
 scatter(approach_divs(1:29),flex_percentage_app, 60,'MarkerEdgeColor', 'red', 'MarkerFaceColor','red')
 coeffs = polyfit(approach_divs(1:29),flex_percentage_app,1);
 fit = polyval(coeffs,approach_divs(1:29));
-SStot = sum((flex_percentage_app)-mean(flex_percentage_app).^2);                   
-SSres = sum((flex_percentage_app-fit).^2);                    
-Rsq = 1-SSres/SStot; 
+SStot = sum((flex_percentage_app - mean(flex_percentage_app)).^2);                    % Total Sum-Of-Squares
+SSres = sum((flex_percentage_app-fit).^2);                       % Residual Sum-Of-Squares
+Rsq = 1-SSres/SStot;                            % R^2        % Residual Sum-Of-Squares                       % R^2 
 L = legend(['R^2: ' , num2str(Rsq)], 'Location','northwest', 'FontSize', 15);
 L.AutoUpdate = 'off';
 ylim([0.2,1])
@@ -103,9 +103,10 @@ subplot(1,2,2)
 scatter(approach_divs(1:29),flee_percentage_app, 60,'MarkerEdgeColor', 'blue', 'MarkerFaceColor','blue')
 coeffs = polyfit(approach_divs(1:29),flee_percentage_app,1);
 fit = polyval(coeffs,approach_divs(1:29));
-SStot = sum((flee_percentage_app)-mean(flee_percentage_app).^2);                   
-SSres = sum((flee_percentage_app-fit).^2);                    
-Rsq = 1-SSres/SStot; 
+
+SStot = sum((flee_percentage_app - mean(flee_percentage_app)).^2);                    % Total Sum-Of-Squares
+SSres = sum((flee_percentage_app-fit).^2);                       % Residual Sum-Of-Squares
+Rsq = 1-SSres/SStot;                            % R^2        % Residual Sum-Of-Squares
 L = legend(['R^2: ' , num2str(Rsq)], 'Location','northwest', 'FontSize', 15);
 L.AutoUpdate = 'off';
 ylim([0.2,1])
