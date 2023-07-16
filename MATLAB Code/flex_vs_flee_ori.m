@@ -50,15 +50,15 @@ for i = 1:29
 end
 % all_by_app = [flex_percentage_app; flee_percentage_app; both_percentage_app; neither_percentage_app];
 
-fig = figure('units','inch','position',[0,0,10,10]);
+fig = figure('units','inch','position',[0,0,20,10]);
 
-% subplot(1,2,1)
+subplot(1,2,1)
 % danger_percentage_app_pos([18,26]) = NaN
-scatter(orientation_divs(1:29),danger_percentage_ori, 60,'MarkerEdgeColor', 'red', 'MarkerFaceColor','red')
-coeffs = polyfit(orientation_divs(1:29),danger_percentage_ori,1);
+scatter(orientation_divs(1:29),flex_percentage_ori, 60,'MarkerEdgeColor', 'magenta', 'MarkerFaceColor','magenta')
+coeffs = polyfit(orientation_divs(1:29),flex_percentage_ori,1);
 fit = polyval(coeffs,orientation_divs(1:29));
-SStot = sum((danger_percentage_ori-mean(danger_percentage_ori)).^2);                   
-SSres = sum((danger_percentage_ori-fit).^2);                    
+SStot = sum((flex_percentage_ori-mean(flex_percentage_ori)).^2);                   
+SSres = sum((flex_percentage_ori-fit).^2);                    
 Rsq = 1-SSres/SStot; 
 L = legend(['R^2: ' , num2str(Rsq)], 'Location','northwest', 'FontSize', 15);
 L.AutoUpdate = 'off';
@@ -66,8 +66,8 @@ L.AutoUpdate = 'off';
 grid on
 hold on
 plot(orientation_divs(1:29), fit, 'LineWidth' ,2,'Color','black')
-% title('Proportion of Threat Responses by Orientation')
-ylim([0,1])
+title('Flex Percentage')
+
 
    offsetAxes(gca);
     set(gca, ...
@@ -78,40 +78,39 @@ ylim([0,1])
         'FontSize', 16,...
         'Box', 'off');
     xlabel('Orientation', 'FontSize', 14);
-    ylabel('Propotion Threat Response', 'FontSize', 14);
+    ylabel('Propotion Flex Response', 'FontSize', 14);
     whitebg('white')
+    
+subplot(1,2,2)
+scatter(orientation_divs(1:29),flee_percentage_ori, 60,'MarkerEdgeColor', [0 0.4470 0.7410], 'MarkerFaceColor',[0 0.4470 0.7410])
+coeffs = polyfit(orientation_divs(1:29),flee_percentage_ori,1);
+fit = polyval(coeffs,orientation_divs(1:29));
+SStot = sum((flee_percentage_ori-mean(flee_percentage_ori)).^2);                   
+SSres = sum((flee_percentage_ori-fit).^2);                    
+Rsq = 1-SSres/SStot; 
+L = legend(['R^2: ' , num2str(Rsq)], 'Location','northwest', 'FontSize', 15);
+L.AutoUpdate = 'off';
 
-% subplot(1,2,2)
-% scatter(orientation_divs(1:29),flee_percentage_ori, 60,'MarkerEdgeColor', [0 0.4470 0.7410], 'MarkerFaceColor',[0 0.4470 0.7410])
-% coeffs = polyfit(orientation_divs(1:29),flee_percentage_ori,3);
-% fit = polyval(coeffs,orientation_divs(1:29));
-% SStot = sum((flee_percentage_ori-mean(flee_percentage_ori)).^2);                   
-% SSres = sum((flee_percentage_ori-fit).^2);                    
-% Rsq = 1-SSres/SStot; 
-% L = legend(['R^2: ' , num2str(Rsq)], 'Location','northwest', 'FontSize', 15);
-% L.AutoUpdate = 'off';
-% 
-% 
-% 
-% grid on
-% hold on
-% plot(orientation_divs(1:29), fit, 'LineWidth' ,2,'Color','black')
-% title('Flee Percentage')
-% 
-% 
-%    offsetAxes(gca);
-%     set(gca, ...
-%         'LineWidth', 2,...
-%         'XColor', 'k',...
-%         'YColor', 'k',...
-%         'FontName', 'Arial',...
-%         'FontSize', 16,...
-%         'Box', 'off');
-%     xlabel('Orientation', 'FontSize', 14);
-%     ylabel('Percentage Flee Response', 'FontSize', 14);
-%     whitebg('white')
+grid on
+hold on
+plot(orientation_divs(1:29), fit, 'LineWidth' ,2,'Color','black')
+title('Flee Percentage')
 
-titles = "Proportion of Threat Responses by Orientation (Ants)"
-title(titles,'FontSize',20)
 
-% saveas(gcf,'/Users/jasonwong/Projects/neuroetho/Ant Graphs/'+ titles + '.png')
+   offsetAxes(gca);
+    set(gca, ...
+        'LineWidth', 2,...
+        'XColor', 'k',...
+        'YColor', 'k',...
+        'FontName', 'Arial',...
+        'FontSize', 16,...
+        'Box', 'off');
+    xlabel('Orientation', 'FontSize', 14);
+    ylabel('Percentage Flee Response', 'FontSize', 14);
+    whitebg('white')
+    
+
+titles = "Proportion of Flex and Flee Responses by Orientation (Ants)"
+sgtitle(titles,'FontSize',20)
+
+saveas(gcf,'/Users/jasonwong/Projects/neuroetho/Ant Graphs/'+ titles + '.png')
